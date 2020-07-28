@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    tools:background="#fff">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvToday"
+        style="@style/Widget.AppTheme.TextView"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp"
+        android:text="@string/today" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/mtvDate"
+        style="@style/Widget.AppTheme.TextView"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/mtvToday"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorTextSecondary"
+        tools:text="Tue\nFeb 30" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/sTemperatures"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/mtvToday"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_toRightOf="@+id/mtvDate"
+        android:valueFrom="0.0"
+        android:valueTo="1.0"
+        app:thumbRadius="4dp"
+        app:trackColorInactive="@android:color/transparent"
+        app:trackHeight="4dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clTempLabels"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/mtvToday"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/mtvDate">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTempMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvTempMin"
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="100°F"
+            android:layout_marginRight="6dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.6"
+            app:layout_constraintRight_toRightOf="@+id/guidelineTempMin" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvTempMinLabel"
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:text="Min"
+            android:alpha="0.6"
+            android:paddingTop="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/mtvTempMin" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTempMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="1" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvTempMax"
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="100°F"
+            android:layout_marginLeft="6dp"
+            android:textColor="@color/colorTextSecondary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.6"
+            app:layout_constraintLeft_toLeftOf="@+id/guidelineTempMax" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvTempMaxLabel"
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:includeFontPadding="false"
+            android:text="Max"
+            android:paddingLeft="4dp"
+            android:alpha="0.6"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.25"
+            app:layout_constraintRight_toRightOf="@+id/mtvTempMax" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTempNow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvTempNow"
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="100°F"
+            android:textSize="16sp"
+            android:textColor="@color/colorTextSecondary"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintLeft_toLeftOf="@+id/guidelineTempNow"
+            app:layout_constraintRight_toRightOf="@+id/guidelineTempNow"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/mtvTempNowLabel"
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:includeFontPadding="false"
+            android:text="Now"
+            app:layout_constraintTop_toTopOf="@+id/mtvTempNow"
+            app:layout_constraintRight_toLeftOf="@+id/mtvTempNow" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/interceptView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/mtvToday"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/mtvDate"
+        android:clickable="true" />
+
+</RelativeLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundSecondary">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.AppTheme.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="This app is licensed under Mozilla Public License 2.0." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbLicense"
+                style="@style/Widget.AppTheme.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="View License Text" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.AppTheme.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="This app exchanges data with third party data providers minimally." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbData"
+                style="@style/Widget.AppTheme.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="View Data &amp; Privacy Policy" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.AppTheme.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="This app uses parts of third party software." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbLicensesThirdParty"
+                style="@style/Widget.AppTheme.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="View Third Party Software Info" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.AppTheme.TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="This app has open source code." />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbAboutApp"
+                style="@style/Widget.AppTheme.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:text="View App Web Page" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="20dp"
+        android:backgroundTint="?attr/colorAccent"
+        android:src="@drawable/ic_check_black_24dp"
+        app:tint="@color/colorBackgroundPrimary" />
+
+</FrameLayout>

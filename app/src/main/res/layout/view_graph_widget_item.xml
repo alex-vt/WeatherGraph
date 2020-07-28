@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/view_widget_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="6dp"
+    android:layout_marginTop="@dimen/widget_card_margin"
+    android:layout_marginLeft="@dimen/widget_card_margin"
+    android:layout_marginRight="@dimen/widget_card_margin"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardElevation="0dp"
+    android:id="@+id/cvWidget"
+    app:cardPreventCornerOverlap="false">
+
+    <ImageView
+        android:id="@+id/ivWidget"
+        android:layout_width="match_parent"
+        android:background="@color/colorGray"
+        android:layout_height="@dimen/view_widget_height" />
+
+</androidx.cardview.widget.CardView>

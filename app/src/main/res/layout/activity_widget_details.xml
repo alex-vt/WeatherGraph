@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flWidgetDetails"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/ivWholeWallpaperBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/ivWidgetGrayBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivWidget"
+        android:layout_alignBottom="@+id/ivWidget"
+        android:layout_marginTop="-5dp"
+        android:layout_marginBottom="-5dp"
+        android:background="@color/colorGray"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/ivWidget"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_widget_height"
+        android:layout_margin="@dimen/widget_card_margin" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/clEditable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ivWidget">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvWeatherDetails"
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/colorBackgroundTranslucent2"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:id="@+id/llDayTemperatures"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_margin="5dp">
+
+                        <include
+                            android:id="@+id/vDay1"
+                            layout="@layout/view_day_temperature"/>
+
+                        <include
+                            android:id="@+id/vDay2"
+                            layout="@layout/view_day_temperature"/>
+
+                        <include
+                            android:id="@+id/vDay3"
+                            layout="@layout/view_day_temperature"/>
+
+                        <include
+                            android:id="@+id/vDay4"
+                            layout="@layout/view_day_temperature"/>
+
+                        <include
+                            android:id="@+id/vDay5"
+                            layout="@layout/view_day_temperature"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvSunriseSunset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    app:cardBackgroundColor="@color/colorBackgroundTranslucent2"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="6dp">
+
+                    <RelativeLayout
+                        android:layout_margin="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mtvToday"
+                            style="@style/Widget.AppTheme.TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Today" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mtvSunrise"
+                            style="@style/Widget.AppTheme.TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/mtvToday"
+                            android:text="@string/sunrise" />
+
+                        <ImageView
+                            android:id="@+id/ivUp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_toRightOf="@+id/mtvSunrise"
+                            android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
+                            app:tint="?colorPrimary" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@+id/mtvSunrise"
+                            android:src="@drawable/ic_baseline_wb_sunny_24"
+                            app:tint="?colorPrimary" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toLeftOf="@+id/mtvSunset"
+                            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                            app:tint="?colorPrimary" />
+
+                        <ImageView
+                            android:id="@+id/ivDown"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="6dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_toLeftOf="@+id/mtvSunset"
+                            android:src="@drawable/ic_baseline_wb_sunny_24"
+                            app:tint="?colorPrimary" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/mtvSunset"
+                            style="@style/Widget.AppTheme.TextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/mtvToday"
+                            android:layout_alignParentRight="true"
+                            android:text="@string/sunset" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:backgroundTint="?attr/colorAccent"
+            android:src="@drawable/ic_edit_black_24dp"
+            app:elevation="11dp"
+            app:layout_anchor="@+id/rlBottomSheet"
+            app:layout_anchorGravity="top|end"
+            app:tint="@color/colorBackgroundPrimary" />
+
+        <RelativeLayout
+            android:id="@+id/rlBottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBackgroundPrimary"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="50dp"
+            app:gestureInsetBottomIgnored="true"
+            app:layout_behavior=".android.LockableBottomSheetBehavior"
+            tools:visibility="gone">
+
+            <View
+                android:id="@+id/vPullUpTab"
+                android:layout_width="50dp"
+                android:layout_height="4.5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="40dp"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tvCurrentLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:layout_toLeftOf="@+id/tvRightHeader"
+                tools:text="Weather in Kyiv" />
+
+            <TextView
+                android:id="@+id/tvRightHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:text="Line 1\nLine 2"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/flSettingSection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bnView"
+                android:layout_below="@+id/vPullUpTab" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bnView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:background="?attr/colorPrimary"
+                app:menu="@menu/widget_details_bottom_menu" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/bnView"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="20dp"
+                android:backgroundTint="?attr/colorAccent"
+                android:src="@drawable/ic_check_black_24dp"
+                app:elevation="11dp"
+                app:tint="@color/colorBackgroundPrimary" />
+
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

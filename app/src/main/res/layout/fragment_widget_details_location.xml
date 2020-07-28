@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlLocationFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomWrapper">
+
+
+        <LinearLayout
+            android:id="@+id/llSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/svLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rounded"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                app:queryHint="@string/search_new_location" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbUseMyLocationSearch"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llSearch"
+            android:layout_centerHorizontal="true"
+            android:text=" Use my location"
+            android:layout_marginBottom="12dp"
+            app:icon="@drawable/ic_my_location_black_24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLocationSuggestions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/mbUseMyLocationSearch"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorBackgroundSecondary"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomWrapper"
+        android:visibility="gone">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbUseMyLocationSearchMap"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text=" Use my location"
+            android:layout_marginBottom="12dp"
+            app:icon="@drawable/ic_my_location_black_24dp" />
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/mvMap"
+            android:layout_below="@+id/mbUseMyLocationSearchMap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/bottomWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="3dp"
+        >
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/mbtgSearchKind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_vertical"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbSearch"
+                style="@style/Widget.AppTheme.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_search_black_24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mbMap"
+                style="@style/Widget.AppTheme.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_map_black_24dp" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    </FrameLayout>
+
+</RelativeLayout>

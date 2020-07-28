@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomWrapper"
+        android:background="@color/colorBackgroundSecondary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/smLocationName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:checked="true"
+                android:text="Show Location Name" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/smLastUpdateTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:checked="true"
+                android:text="Show Last Update Time" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/smUnits"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:checked="true"
+                android:text="Show Units" />
+
+            <include
+                android:id="@+id/vBackground"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vGrid"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vText"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vTemperature"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vCloudPercent"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vPrecipitation"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vWindSpeed"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vAirQuality"
+                layout="@layout/view_palette_and_size" />
+
+            <include
+                android:id="@+id/vDayNight"
+                layout="@layout/view_palette_and_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.AppTheme.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="20dp"
+                android:text="Widget padding on Home Screen" />
+
+            <!-- todo -->
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/mcbShowMargins"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="-2dp"
+                android:text="Show here on the widget preview" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingRight="10dp"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/Widget.AppTheme.TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/tvTop"
+                        android:text="Top" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/Widget.AppTheme.TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/tvLeft"
+                        android:text="Left" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/Widget.AppTheme.TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/tvBottom"
+                        android:text="Bottom" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/Widget.AppTheme.TextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:id="@+id/tvRight"
+                        android:text="Right" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sMarginTop"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sMarginLeft"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sMarginBottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp" />
+
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/sMarginRight"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/bottomWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="3dp">
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/smPreviewWallpaper"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:text="Preview on home screen background" />
+
+
+    </FrameLayout>
+
+</RelativeLayout>

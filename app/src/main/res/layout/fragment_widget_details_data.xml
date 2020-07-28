@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackgroundSecondary"
+        android:layout_above="@+id/bottomWrapper">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/Widget.AppTheme.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginRight="10dp"
+
+                    android:text="Show for" />
+
+                <include
+                    android:id="@+id/vShowDaysButtons"
+                    layout="@layout/view_material_5_button_group" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/Widget.AppTheme.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="days" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:paddingBottom="10dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/Widget.AppTheme.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="1dp"
+                    android:text="Update every" />
+
+                <include
+                    android:id="@+id/vUpdateTimeButtons"
+                    layout="@layout/view_material_5_button_group" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/Widget.AppTheme.TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="1dp"
+                    android:text="hours" />
+
+            </LinearLayout>
+
+            <include
+                android:id="@+id/vTemperature"
+                layout="@layout/view_widget_details_data_item" />
+
+            <include
+                android:id="@+id/vCloudPercent"
+                layout="@layout/view_widget_details_data_item" />
+
+            <include
+                android:id="@+id/vPrecipitation"
+                layout="@layout/view_widget_details_data_item" />
+
+            <include
+                android:id="@+id/vWindSpeed"
+                layout="@layout/view_widget_details_data_item" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/smAirQuality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Show Air Quality" />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.AppTheme.TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/mtvAirQualityNotAvailable"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="-8dp"
+                android:layout_marginBottom="4dp"
+                android:text="Not available for chosen location"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/smSunriseSunset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Show Sunrise &amp; Sunset Time" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/smTime24h"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Use 24 hour time" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/bottomWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="3dp"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbDataSources"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:text="Data Sources..." />
+
+    </FrameLayout>
+
+</RelativeLayout>

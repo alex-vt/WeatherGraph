@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<com.google.android.material.button.MaterialButtonToggleGroup xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:selectionRequired="true"
+    android:id="@+id/mbtg"
+    app:singleSelection="true">
+
+    <include
+        android:id="@+id/vButton1"
+        layout="@layout/view_material_text_button" />
+
+    <include
+        android:id="@+id/vButton2"
+        layout="@layout/view_material_text_button" />
+
+    <include
+        android:id="@+id/vButton3"
+        android:visibility="gone"
+        tools:visibility="visible"
+        layout="@layout/view_material_text_button" />
+
+    <include
+        android:id="@+id/vButton4"
+        android:visibility="gone"
+        tools:visibility="visible"
+        layout="@layout/view_material_text_button" />
+
+    <include
+        android:id="@+id/vButton5"
+        android:visibility="gone"
+        tools:visibility="visible"
+        layout="@layout/view_material_text_button" />
+
+</com.google.android.material.button.MaterialButtonToggleGroup>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/palette_size_base"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:clickable="false"
+        android:layout_margin="5dp"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:id="@+id/ivBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="horizontal"
+        >
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mbSelection"
+            style="@style/Widget.AppTheme.Button.IconButton"
+            app:strokeWidth="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/Widget.AppTheme.TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:id="@+id/tvHigh"
+        android:textSize="12sp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="-18dp"
+        android:clickable="false"
+        android:text="High" />
+
+    <ImageView
+        android:layout_margin="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:scaleType="centerCrop"
+        android:src="@drawable/checkerboard_gradient"
+        android:layout_below="@+id/tvHigh"
+        android:layout_above="@+id/tvLow"/>
+
+    <ImageView
+        android:id="@+id/ivPalette"
+        android:layout_margin="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:scaleType="fitXY"
+        android:layout_below="@+id/tvHigh"
+        android:layout_above="@+id/tvLow"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/Widget.AppTheme.TextView"
+        android:clickable="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/tvLow"
+        android:textSize="12sp"
+        android:layout_marginTop="-12dp"
+        android:text="Low" />
+
+</RelativeLayout>

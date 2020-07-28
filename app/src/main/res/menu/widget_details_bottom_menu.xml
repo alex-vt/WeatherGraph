@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_location"
+        android:title="Location"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_location_on_black_24dp"
+        />
+    <item
+        android:id="@+id/action_data"
+        android:title="Weather Data"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+        />
+    <item
+        android:id="@+id/action_appearance"
+        android:title="Appearance"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_brush_black_24dp"
+        />
+</menu>

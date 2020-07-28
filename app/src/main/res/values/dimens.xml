@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<resources>
+    <dimen name="view_widget_height">100dp</dimen>
+    <dimen name="palette_size_base">80dp</dimen>
+    <dimen name="palette_size_big">120dp</dimen>
+    <dimen name="widget_card_margin">5dp</dimen>
+    <dimen name="temp_range_bar_side_margin">44dp</dimen>
+</resources>

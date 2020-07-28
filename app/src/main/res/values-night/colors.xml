@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<resources>
+    <!-- Primary H/S/V:      H/ 44/ 96 -->
+
+    <!-- H 255 / 170 -->
+    <color name="colorPrimary1">#A489F4</color>
+    <color name="colorAccent1">#89F4E2</color>
+
+    <!-- H 360 / 100 -->
+    <color name="colorPrimary2">#F48989</color>
+    <color name="colorAccent2">#ACF489</color>
+
+    <!-- H 120 / 25 -->
+    <color name="colorPrimary3">#89F489</color>
+    <color name="colorAccent3">#F4B589</color>
+
+    <!-- H 50 / 210 -->
+    <color name="colorPrimary4">#F4E289</color>
+    <color name="colorAccent4">#89BEF4</color>
+
+    <!-- BW -->
+    <color name="colorPrimary5">#EEEEEE</color>
+    <color name="colorAccent5">#EEEEEE</color>
+
+    <color name="colorBackgroundPrimary">#1e1e1e</color>
+    <color name="colorBackgroundSecondary">#121212</color>
+    <color name="colorBackgroundTranslucent">#90121212</color>
+    <color name="colorBackgroundTranslucent2">#c01e1e1e</color>
+    <color name="colorTextPrimary">#FFFFFF</color>
+    <color name="colorTextSecondary">#DDDDDD</color>
+</resources>

@@ -1,0 +1,62 @@
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<resources>
+    <string name="app_name">Weather Graph Preview</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
+    <string name="remove_widget">Remove widget?</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_new_widget">Add new widget</string>
+    <string name="add_new_widget_at_home">Add new widget at the Home screen to see it there and here in the app. If you add it here, it won\'t show at the Home screen.</string>
+    <string name="add_here_anyway">Add here anyway</string>
+    <string name="remove_widget_at_home_screen">Remove the widget at the Home screen. If you do it here, the widget at the Home screen will be cleared.</string>
+    <string name="widget_will_be_removed">This widget will be removed.</string>
+    <string name="new_widget_will_be_discarded">This new widget will be discarded.</string>
+    <string name="remove_anyway">Remove anyway</string>
+    <string name="remove">Remove</string>
+    <string name="discard_changes">Discard changes?</string>
+    <string name="unsaved_changes_lost">Unsaved changes will be lost.</string>
+    <string name="yes_discard">Yes, discard changes</string>
+    <string name="turn_gps_on">Please turn on GPS to get location.</string>
+    <string name="getting_location">Getting location…</string>
+    <string name="retry">Retry</string>
+    <string name="couldnt_get_location">Couldn\'t get location</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="network_connection_issues">Network connection issues</string>
+    <string name="search_new_location">Search new location</string>
+    <string name="storage_read_permission">Storage read permission</string>
+    <string name="wallpaper_needs_read">Home screen wallpaper needs to be read from storage</string>
+    <string name="storage_write_permission">Storage write permission</string>
+    <string name="export_needs_write">Exported file is to be written to storage</string>
+    <string name="location">Location: %1$s</string>
+    <string name="this_app_stores_data">
+        This app stores data on device for showing weather widgets, and also sends/receives to/from data sources the data necessary for updating the widgets. Deleting the app also deletes its data stored on device, except what was exported or shared to other places by user.
+        \n
+        \nData sources listed below are not associated with this app, and they may have their own terms of use:
+    </string>
+    <string name="data_source_title">%1$s data source: %2$s</string>
+    <string name="welcome">Welcome!</string>
+    <string name="weather_graph_can_visualize">Weather Graph can visualize weather for you in different locations - also on home screen widgets.
+        \n
+        \nThe app has open source code under Mozilla Public License 2.0, and modest Data &amp; Privacy Policy.
+        \n
+        \nEnjoy!</string>
+    <string name="accept">Accept</string>
+    <string name="close">Close</string>
+    <string name="mozilla_license">Mozilla Public License 2.0</string>
+    <string name="data_privacy_policy">Data &amp; Privacy Policy</string>
+    <string name="app_web_page_url">https://github.com/alex-vt/WeatherGraph</string>
+    <string name="third_party_software_info">Third Party Software Info</string>
+    <string name="reset_settings">Reset settings?</string>
+    <string name="confirm">Confirm</string>
+    <string name="settings_will_reset">App settings will be set to default, and welcome messages may appear again as well.\n\nWidgets you added will stay.</string>
+    <string name="sunrise">Sunrise: %1$s</string>
+    <string name="sunset">Sunset: %1$s</string>
+    <string name="now">Now:</string>
+    <string name="week_date">%1$s\n%2$s</string>
+    <string name="today">Today</string>
+</resources>

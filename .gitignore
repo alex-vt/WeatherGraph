@@ -1,0 +1,15 @@
+*.iml
+.idea/
+*.sw[op]
+.DS_Store
+
+.gradle/
+build/
+schemas/
+
+*.jks
+*.keystore
+google-services.json
+local.properties
+signing.properties
+apikey.properties

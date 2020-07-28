@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlWeatherDetailsDataItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/smTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:checked="true"
+        tools:text="Title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:id="@+id/vUnits"
+        android:paddingBottom="10dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+            android:text="Units" />
+
+        <include
+            android:id="@+id/vUnitButtons"
+            layout="@layout/view_material_5_button_group" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:id="@+id/vCutoff"
+        android:paddingBottom="10dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="10dp"
+            android:text="Max value" />
+
+        <include
+            android:id="@+id/vLimitButtons"
+            layout="@layout/view_material_5_button_group" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.AppTheme.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/mtvMaxValue"
+            android:layout_marginTop="1dp"
+            android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

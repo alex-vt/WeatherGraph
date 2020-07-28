@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this
+  ~ file, You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<resources>
+    <!-- Primary H/S/V:      H/ 84/ 90 -->
+    <!-- Primary Dark H/S/V: H/ 85/ 67 -->
+    <!-- Accent H/S/V:       H/100/ 95 -->
+
+    <!-- H 255 / 170 -->
+    <color name="colorPrimary1">#5424E5</color>
+    <color name="colorPrimaryDark1">#3D19AA</color>
+    <color name="colorAccent1">#00D8B4</color>
+
+    <!-- H 360 / 100 -->
+    <color name="colorPrimary2">#E52424</color>
+    <color name="colorPrimaryDark2">#AA1919</color>
+    <color name="colorAccent2">#50F200</color>
+
+    <!-- H 120 / 25 -->
+    <color name="colorPrimary3">#24E524</color>
+    <color name="colorPrimaryDark3">#19AA19</color>
+    <color name="colorAccent3">#EF6300</color>
+
+    <!-- H 50 / 210 -->
+    <color name="colorPrimary4">#E5C524</color>
+    <color name="colorPrimaryDark4">#AA9219</color>
+    <color name="colorAccent4">#0079F2</color>
+
+    <!-- BW -->
+    <color name="colorPrimary5">#888888</color>
+    <color name="colorPrimaryDark5">#555555</color>
+    <color name="colorAccent5">#888888</color>
+
+    <color name="colorBackgroundPrimary">#FFFFFF</color>
+    <color name="colorBackgroundSecondary">#F5F5F5</color>
+    <color name="colorBackgroundTranslucent">#99FFFFFF</color>
+    <color name="colorBackgroundTranslucent2">#CCFFFFFF</color>
+    <color name="colorTextPrimary">#111111</color>
+    <color name="colorTextSecondary">#444444</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#7F7F7F</color>
+</resources>
