@@ -9,10 +9,10 @@ package com.alexvt.weathergraph.android
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.alexvt.weathergraph.R
+import com.alexvt.weathergraph.databinding.ActivityLicenseBinding
 import com.alexvt.weathergraph.viewmodel.EventObserver
 import com.alexvt.weathergraph.viewmodel.LicenseViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_license.*
 import javax.inject.Inject
 
 
@@ -25,22 +25,28 @@ class LicenseActivity : BaseAppCompatActivity(R.layout.activity_license) {
         ViewModelProvider(this, vmFactory)[LicenseViewModel::class.java]
     }
 
+    private lateinit var binding: ActivityLicenseBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        binding = ActivityLicenseBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         bindNavigation()
         bindText()
     }
 
     private fun bindNavigation() {
-        fabOk.setOnClickListener { viewModel.clickBack() }
+        binding.fabOk.setOnClickListener { viewModel.clickBack() }
         viewModel.backNavigationLiveData.observe(this, EventObserver { finish() })
     }
 
     // todo use viewmodel
     private fun bindText() = assets.open("license.txt").bufferedReader()
-        .use { it.readText() }.let { mtvText.text = it }
+        .use { it.readText() }.let { binding.mtvText.text = it }
 
     override fun onSupportNavigateUp() = viewModel.clickBack().let { true }
 

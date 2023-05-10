@@ -11,31 +11,45 @@ import android.app.WallpaperManager
 import android.content.res.ColorStateList
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
 import com.afollestad.assent.rationale.createDialogRationale
-import com.afollestad.materialdialogs.utils.MDUtil.inflate
 import com.alexvt.weathergraph.R
+import com.alexvt.weathergraph.databinding.FragmentWidgetDetailsAppearanceBinding
+import com.alexvt.weathergraph.databinding.ViewPaletteAndSizeBinding
+import com.alexvt.weathergraph.databinding.ViewPaletteOptionItemBinding
 import com.alexvt.weathergraph.viewmodel.WidgetDetailsAppearanceViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
 import com.google.android.material.switchmaterial.SwitchMaterial
-import kotlinx.android.synthetic.main.fragment_widget_details_appearance.*
-import kotlinx.android.synthetic.main.view_material_5_button_group.view.*
-import kotlinx.android.synthetic.main.view_palette_and_size.view.*
-import kotlinx.android.synthetic.main.view_palette_option_item.view.*
 import kotlin.math.roundToInt
 
 class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_details_appearance) {
 
     private val viewModel by lazy {
         viewModelProvider[WidgetDetailsAppearanceViewModel::class.java]
+    }
+
+    private var _binding: FragmentWidgetDetailsAppearanceBinding? = null
+    private val binding get() = _binding!! // see https://developer.android.com/topic/libraries/view-binding#fragments
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWidgetDetailsAppearanceBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -62,25 +76,25 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
 
 
     private fun bindShowLocationName() = bindSwitchSection(
-        switch = smLocationName,
+        switch = binding.smLocationName,
         optionLiveData = viewModel.showLocationNameLiveData,
         switchListener = { viewModel.setShowLocationNameEnabled(it) }
     )
 
     private fun bindShowLastUpdateTime() = bindSwitchSection(
-        switch = smLastUpdateTime,
+        switch = binding.smLastUpdateTime,
         optionLiveData = viewModel.showLastUpdateTimeLiveData,
         switchListener = { viewModel.setShowLastUpdateTimeEnabled(it) }
     )
 
     private fun bindShowUnits() = bindSwitchSection(
-        switch = smUnits,
+        switch = binding.smUnits,
         optionLiveData = viewModel.showUnitsLiveData,
         switchListener = { viewModel.setShowUnitsEnabled(it) }
     )
 
     private fun bindBackground() = bindColorAndSizeSection(
-        sectionView = vBackground,
+        sectionViewBinding = binding.vBackground,
         enabledLiveData = viewModel.enabledLiveData,
         title = "Background color",
         palettesLiveData = viewModel.getBackgroundColorLiveData(),
@@ -88,7 +102,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindGrid() = bindColorAndSizeSection(
-        sectionView = vGrid,
+        sectionViewBinding = binding.vGrid,
         enabledLiveData = viewModel.enabledLiveData,
         title = "Grid lines color",
         palettesLiveData = viewModel.getGridColorLiveData(),
@@ -100,7 +114,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindText() = bindColorAndSizeSection(
-        sectionView = vText,
+        sectionViewBinding = binding.vText,
         enabledLiveData = viewModel.enabledLiveData,
         title = "Text color",
         palettesLiveData = viewModel.getTextColorLiveData(),
@@ -112,7 +126,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindTemperature() = bindColorAndSizeSection(
-        sectionView = vTemperature,
+        sectionViewBinding = binding.vTemperature,
         enabledLiveData = viewModel.enabledLiveData,
         title = "Temperature graph palette",
         palettesLiveData = viewModel.getTemperaturePaletteLiveData("low", "high"),
@@ -125,7 +139,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindCloudPercent() = bindColorAndSizeSection(
-        sectionView = vCloudPercent,
+        sectionViewBinding = binding.vCloudPercent,
         title = "Cloudiness visual palette",
         enabledLiveData = viewModel.cloudPercentEnabledLiveData,
         palettesLiveData = viewModel.getCloudPaletteLiveData("clear", "cloudy"),
@@ -134,7 +148,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindPrecipitation() = bindColorAndSizeSection(
-        sectionView = vPrecipitation,
+        sectionViewBinding = binding.vPrecipitation,
         title = "Precipitation bars palette",
         enabledLiveData = viewModel.precipitationEnabledLiveData,
         palettesLiveData = viewModel.getPrecipitationPaletteLiveData("none", "high"),
@@ -143,7 +157,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindWindSpeed() = bindColorAndSizeSection(
-        sectionView = vWindSpeed,
+        sectionViewBinding = binding.vWindSpeed,
         title = "Wind speed graph palette",
         enabledLiveData = viewModel.windSpeedEnabledLiveData,
         palettesLiveData = viewModel.getWindSpeedPaletteLiveData("none", "high"),
@@ -156,7 +170,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindAirQuality() = bindColorAndSizeSection(
-        sectionView = vAirQuality,
+        sectionViewBinding = binding.vAirQuality,
         title = "Air quality indicator colors",
         enabledLiveData = viewModel.airQualityEnabledLiveData,
         palettesLiveData = viewModel.getAirQualityPaletteLiveData("clean", "polluted"),
@@ -165,7 +179,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     )
 
     private fun bindSunriseSunset() = bindColorAndSizeSection(
-        sectionView = vDayNight,
+        sectionViewBinding = binding.vDayNight,
         title = "Day & night time indicator colors",
         enabledLiveData = viewModel.sunriseSunsetEnabledLiveData,
         palettesLiveData = viewModel.getSunriseSunsetPaletteLiveData("night", "day"),
@@ -175,25 +189,25 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
 
     private fun bindMargins() {
         bindSliderSection(
-            slider = sMarginTop,
+            slider = binding.sMarginTop,
             maxValue = viewModel.marginMax,
             valueLiveData = viewModel.marginTopLiveData,
             slideListener = { viewModel.setMarginTop(it) }
         )
         bindSliderSection(
-            slider = sMarginLeft,
+            slider = binding.sMarginLeft,
             maxValue = viewModel.marginMax,
             valueLiveData = viewModel.marginLeftLiveData,
             slideListener = { viewModel.setMarginLeft(it) }
         )
         bindSliderSection(
-            slider = sMarginBottom,
+            slider = binding.sMarginBottom,
             maxValue = viewModel.marginMax,
             valueLiveData = viewModel.marginBottomLiveData,
             slideListener = { viewModel.setMarginBottom(it) }
         )
         bindSliderSection(
-            slider = sMarginRight,
+            slider = binding.sMarginRight,
             maxValue = viewModel.marginMax,
             valueLiveData = viewModel.marginRightLiveData,
             slideListener = { viewModel.setMarginRight(it) }
@@ -202,7 +216,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
 
 
     private fun bindShowWallpaper() {
-        smPreviewWallpaper.setOnCheckedChangeListener { _, isChecked ->
+        binding.smPreviewWallpaper.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 getReadStoragePermission { isAllowed ->
                     viewModel.setAppearancePreviewWallpaper(isAllowed)
@@ -212,7 +226,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
             }
         }
         viewModel.wallpaperShownLiveData.observe(viewLifecycleOwner, Observer {
-            smPreviewWallpaper.isChecked = it
+            binding.smPreviewWallpaper.isChecked = it
         })
     }
 
@@ -250,7 +264,7 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
     }
 
     private fun bindColorAndSizeSection(
-        sectionView: View,
+        sectionViewBinding: ViewPaletteAndSizeBinding,
         enabledLiveData: LiveData<Boolean>,
         title: String,
         palettesLiveData: LiveData<List<WidgetDetailsAppearanceViewModel.Palette>>,
@@ -262,22 +276,22 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
         sizeIndexListener: ((Int) -> Unit)? = null
     ) {
         enabledLiveData.observe(viewLifecycleOwner, Observer { enabled ->
-            sectionView.visibility = if (enabled) View.VISIBLE else View.GONE
+            sectionViewBinding.root.visibility = if (enabled) View.VISIBLE else View.GONE
         })
-        sectionView.tvTitle.text = title
-        sectionView.rvPaletteList.layoutParams.height =
+        sectionViewBinding.tvTitle.text = title
+        sectionViewBinding.rvPaletteList.layoutParams.height =
             (if (bigHeight) R.dimen.palette_size_big else R.dimen.palette_size_base).let {
                 resources.getDimension(it).roundToInt()
             }
-        sectionView.rvPaletteList.adapter =
+        sectionViewBinding.rvPaletteList.adapter =
             PaletteRecyclerAdapter(activity, paletteIndexListener)
         palettesLiveData.observe(viewLifecycleOwner, Observer {
-            (sectionView.rvPaletteList.adapter as PaletteRecyclerAdapter).setItems(it)
+            (sectionViewBinding.rvPaletteList.adapter as PaletteRecyclerAdapter).setItems(it)
         })
-        sectionView.llSize.visibility = if (sizeTitle != null) View.VISIBLE else View.GONE
-        sectionView.tvSizeName.text = sizeTitle
+        sectionViewBinding.llSize.visibility = if (sizeTitle != null) View.VISIBLE else View.GONE
+        sectionViewBinding.tvSizeName.text = sizeTitle
 
-        sectionView.getSizeButtons().take(sizeOptions.size).mapIndexed { index, button ->
+        sectionViewBinding.getSizeButtons().take(sizeOptions.size).mapIndexed { index, button ->
             button.apply {
                 visibility = View.VISIBLE
                 text = sizeOptions[index]
@@ -287,13 +301,13 @@ class WidgetDetailsAppearanceFragment : BaseFragment(R.layout.fragment_widget_de
             }
         }
         sizeIndexLiveData?.observe(viewLifecycleOwner, Observer { index ->
-            sectionView.getSizeButtons()[index].isChecked = true
+            sectionViewBinding.getSizeButtons()[index].isChecked = true
         })
     }
 
-    private fun View.getSizeButtons() = with(this.vSizeButtons) {
+    private fun ViewPaletteAndSizeBinding.getSizeButtons() = with(this.vSizeButtons) {
         listOf(this.vButton1, this.vButton2, this.vButton3, this.vButton4, this.vButton5)
-            .map { it as MaterialButton }
+            .map { it.mbButton }
     }
 }
 
@@ -309,7 +323,9 @@ private class PaletteRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        PaletteViewHolder(parent.inflate(parent.context, R.layout.view_palette_option_item))
+        PaletteViewHolder(
+            ViewPaletteOptionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
 
     override fun getItemCount() = items.size
 
@@ -318,11 +334,12 @@ private class PaletteRecyclerAdapter(
 
 }
 
-private class PaletteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+private class PaletteViewHolder(private val binding: ViewPaletteOptionItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(
         item: WidgetDetailsAppearanceViewModel.Palette, activity: Activity?,
         clickListener: (Int) -> Unit
-    ) = with(itemView) {
+    ) = with(binding) {
         val (index, isSelected, textLow, textHigh, imageData, backgroundColor, textColor,
             onWallpaper) = item
         ivPalette.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))

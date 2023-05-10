@@ -21,20 +21,13 @@ import com.afollestad.assent.rationale.createDialogRationale
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.alexvt.weathergraph.R
+import com.alexvt.weathergraph.databinding.ActivitySettingsBinding
+import com.alexvt.weathergraph.databinding.ViewMaterial5ButtonGroupBinding
 import com.alexvt.weathergraph.entities.AppTheme
 import com.alexvt.weathergraph.entities.SortingMethod
 import com.alexvt.weathergraph.viewmodel.EventObserver
 import com.alexvt.weathergraph.viewmodel.SettingsViewModel
-import com.google.android.material.button.MaterialButton
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.activity_settings.mbAscending
-import kotlinx.android.synthetic.main.activity_settings.mbDescending
-import kotlinx.android.synthetic.main.activity_settings.smShowWallpaper
-import kotlinx.android.synthetic.main.activity_settings.vSortingMethod
-import kotlinx.android.synthetic.main.activity_settings.vStyle
-import kotlinx.android.synthetic.main.activity_settings.vTheme
-import kotlinx.android.synthetic.main.view_material_5_button_group.view.*
 import javax.inject.Inject
 
 
@@ -47,9 +40,15 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
         ViewModelProvider(this, vmFactory)[SettingsViewModel::class.java]
     }
 
+    private lateinit var binding: ActivitySettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         bindNavigation()
 
@@ -94,28 +93,29 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
                 SortingMethod.LATITUDE -> "Latitude"
             }
         }
-        vSortingMethod.getOptionButtons().take(sortingMethods.size).mapIndexed { index, button ->
-            button.apply {
-                visibility = View.VISIBLE
-                text = nameMap[index].second
+        binding.vSortingMethod.getOptionButtons().take(sortingMethods.size)
+            .mapIndexed { index, button ->
+                button.apply {
+                    visibility = View.VISIBLE
+                    text = nameMap[index].second
+                }
+                button.setOnClickListener { viewModel.quickSettings.clickSortingMethod(index) }
             }
-            button.setOnClickListener { viewModel.quickSettings.clickSortingMethod(index) }
-        }
         viewModel.quickSettings.sortingMethodIndexLiveData.observe(this, Observer { index ->
-            vSortingMethod.getOptionButtons()[index].isChecked = true
+            binding.vSortingMethod.getOptionButtons()[index].isChecked = true
         })
     }
 
-    private fun View.getOptionButtons() =
+    private fun ViewMaterial5ButtonGroupBinding.getOptionButtons() =
         listOf(this.vButton1, this.vButton2, this.vButton3, this.vButton4, this.vButton5)
-            .map { it as MaterialButton }
+            .map { it.mbButton }
 
     private fun bindSortingDirection() {
-        mbAscending.setOnClickListener { viewModel.quickSettings.setSortingAscending(true) }
-        mbDescending.setOnClickListener { viewModel.quickSettings.setSortingAscending(false) }
+        binding.mbAscending.setOnClickListener { viewModel.quickSettings.setSortingAscending(true) }
+        binding.mbDescending.setOnClickListener { viewModel.quickSettings.setSortingAscending(false) }
         viewModel.quickSettings.sortingAscendingLiveData.observe(this, Observer { ascending ->
-            mbAscending.isChecked = ascending
-            mbDescending.isChecked = !ascending
+            binding.mbAscending.isChecked = ascending
+            binding.mbDescending.isChecked = !ascending
         })
     }
 
@@ -128,7 +128,7 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
                 AppTheme.LIGHT -> "Light"
             }
         }
-        vTheme.getOptionButtons().take(themes.size).mapIndexed { index, button ->
+        binding.vTheme.getOptionButtons().take(themes.size).mapIndexed { index, button ->
             button.apply {
                 visibility = View.VISIBLE
                 text = nameMap[index].second
@@ -136,23 +136,24 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
             button.setOnClickListener { viewModel.quickSettings.clickTheme(index) }
         }
         viewModel.quickSettings.themeIndexLiveData.observe(this, Observer { index ->
-            vTheme.getOptionButtons()[index].isChecked = true
+            binding.vTheme.getOptionButtons()[index].isChecked = true
         })
     }
 
     private fun bindStyle() {
         // todo palettes of varying size
-        vStyle.getOptionButtons().mapIndexed { index, button ->
+        binding.vStyle.getOptionButtons().mapIndexed { index, button ->
             button.apply {
                 visibility = View.VISIBLE
                 text = ""
                 icon = getDrawable(R.drawable.ic_palette_black_24dp)
-                setIconTintResource(getTheme(styles[index]).getColorRes(R.attr.colorPrimary))
+                setIconTintResource(getTheme(styles[index])
+                    .getColorRes(androidx.appcompat.R.attr.colorPrimary))
             }
             button.setOnClickListener { viewModel.quickSettings.clickStyle(index) }
         }
         viewModel.quickSettings.styleIndexLiveData.observe(this, Observer { index ->
-            vStyle.getOptionButtons()[index].isChecked = true
+            binding.vStyle.getOptionButtons()[index].isChecked = true
         })
         viewModel.quickSettings.styleChangeLiveData.observe(this, EventObserver { recreate() })
     }
@@ -164,7 +165,7 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
     }.resourceId
 
     private fun bindShowWallpaper() {
-        smShowWallpaper.setOnCheckedChangeListener { _, isChecked ->
+        binding.smShowWallpaper.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 getReadStoragePermission { isAllowed ->
                     viewModel.quickSettings.setShowWallpaper(isAllowed)
@@ -174,7 +175,7 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
             }
         }
         viewModel.quickSettings.showWallpaperLiveData.observe(this, Observer {
-            smShowWallpaper.isChecked = it
+            binding.smShowWallpaper.isChecked = it
         })
     }
 
@@ -191,7 +192,7 @@ class SettingsActivity : BaseAppCompatActivity(R.layout.activity_settings) {
 
     private fun bindNavigation() {
         viewModel.backNavigationLiveData.observe(this, EventObserver { finish() })
-        fabOk.setOnClickListener { viewModel.clickBack() }
+        binding.fabOk.setOnClickListener { viewModel.clickBack() }
     }
 
     override fun onSupportNavigateUp() = viewModel.clickBack().let { true }

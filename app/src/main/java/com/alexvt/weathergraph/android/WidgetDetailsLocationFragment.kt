@@ -21,9 +21,10 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
-import com.afollestad.materialdialogs.utils.MDUtil.inflate
 import com.alexvt.weathergraph.R
 import com.alexvt.weathergraph.android.util.SearchViewUtil
+import com.alexvt.weathergraph.databinding.FragmentWidgetDetailsLocationBinding
+import com.alexvt.weathergraph.databinding.ViewLocationSuggestionItemBinding
 import com.alexvt.weathergraph.viewmodel.WidgetDetailsLocationViewModel
 import com.google.android.gms.location.LocationRequest
 import com.yayandroid.locationmanager.base.LocationBaseFragment
@@ -33,8 +34,6 @@ import com.yayandroid.locationmanager.configuration.LocationConfiguration
 import com.yayandroid.locationmanager.configuration.PermissionConfiguration
 import com.yayandroid.locationmanager.constants.FailType
 import com.yayandroid.locationmanager.constants.ProviderType
-import kotlinx.android.synthetic.main.fragment_widget_details_location.*
-import kotlinx.android.synthetic.main.view_location_suggestion_item.view.*
 import org.osmdroid.config.Configuration
 import org.osmdroid.events.MapListener
 import org.osmdroid.events.ScrollEvent
@@ -50,13 +49,22 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
         (activity as SubViewModelProvider)[WidgetDetailsLocationViewModel::class.java]
     }
 
+    private var _binding: FragmentWidgetDetailsLocationBinding? = null
+    private val binding get() = _binding!! // see https://developer.android.com/topic/libraries/view-binding#fragments
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = FragmentWidgetDetailsLocationBinding.inflate(inflater, container, false)
         prepareMapSettings()
-        return inflater.inflate(R.layout.fragment_widget_details_location, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -74,27 +82,27 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
     }
 
     private fun bindLocationKindSwitch() {
-        mbSearch.setOnClickListener { viewModel.switchLocationToMap(false) }
-        mbMap.setOnClickListener { viewModel.switchLocationToMap(true) }
+        binding.mbSearch.setOnClickListener { viewModel.switchLocationToMap(false) }
+        binding.mbMap.setOnClickListener { viewModel.switchLocationToMap(true) }
         viewModel.locationSwitchedToMapLiveData.observe(viewLifecycleOwner, Observer { toMap ->
-            mbSearch.isChecked = !toMap
-            mbMap.isChecked = toMap
+            binding.mbSearch.isChecked = !toMap
+            binding.mbMap.isChecked = toMap
         })
         viewModel.searchVisibilityLiveData.observe(viewLifecycleOwner, Observer { isVisible ->
-            rlSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
+            binding.rlSearch.visibility = if (isVisible) View.VISIBLE else View.GONE
         })
         viewModel.mapVisibilityLiveData.observe(viewLifecycleOwner, Observer { isVisible ->
-            rlMap.visibility = if (isVisible) View.VISIBLE else View.GONE
+            binding.rlMap.visibility = if (isVisible) View.VISIBLE else View.GONE
         })
     }
 
     override fun onResume() {
         super.onResume()
-        mvMap.onResume()
+        binding.mvMap.onResume()
     }
 
     override fun onPause() {
-        mvMap.onPause()
+        binding.mvMap.onPause()
         super.onPause()
     }
 
@@ -102,8 +110,8 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
         val policy: StrictMode.ThreadPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
         val osmConf = Configuration.getInstance()
-        val basePath = File(activity!!.cacheDir.absolutePath, "osmdroid")
-        osmConf.userAgentValue = activity!!.packageName
+        val basePath = File(requireActivity().cacheDir.absolutePath, "osmdroid")
+        osmConf.userAgentValue = requireActivity().packageName
         osmConf.osmdroidBasePath = basePath
         val tileCache = File(osmConf.osmdroidBasePath.absolutePath, "tile")
         osmConf.osmdroidTileCache = tileCache
@@ -111,42 +119,42 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
     }
 
     private fun bindMapScrolling() {
-        mvMap.setMultiTouchControls(true)
-        mvMap.addMapListener(object : MapListener {
+        binding.mvMap.setMultiTouchControls(true)
+        binding.mvMap.addMapListener(object : MapListener {
             override fun onScroll(event: ScrollEvent?) = updateMarkers().let { false }
             override fun onZoom(event: ZoomEvent?) = updateMarkers().let { false }
 
-            private fun updateMarkers() = with(mvMap.boundingBox) {
+            private fun updateMarkers() = with(binding.mvMap.boundingBox) {
                 viewModel.updateMarkers(latNorth, latSouth, lonWest, lonEast)
             }
         })
     }
 
     private fun bindMap() {
-        mvMap.setTileSource(TileSourceFactory.MAPNIK)
-        mvMap.isTilesScaledToDpi = true
-        mvMap.tilesScaleFactor = 0.8f
-        mvMap.minZoomLevel = 3.0
-        mvMap.maxZoomLevel = 12.0
-        mvMap.controller.setZoom(5)
+        binding.mvMap.setTileSource(TileSourceFactory.MAPNIK)
+        binding.mvMap.isTilesScaledToDpi = true
+        binding.mvMap.tilesScaleFactor = 0.8f
+        binding.mvMap.minZoomLevel = 3.0
+        binding.mvMap.maxZoomLevel = 12.0
+        binding.mvMap.controller.setZoom(5)
         viewModel.mapMarkersLiveData.observe(viewLifecycleOwner, Observer { markerData ->
-            mvMap.overlays.removeAll(mvMap.overlays.map { it as Marker })
-            mvMap.overlays.addAll(markerData.map { getMarker(it) })
-            mvMap.invalidate()
+            binding.mvMap.overlays.removeAll(binding.mvMap.overlays.map { it as Marker })
+            binding.mvMap.overlays.addAll(markerData.map { getMarker(it) })
+            binding.mvMap.invalidate()
         })
         viewModel.selectionMapMarkerLiveData.observe(viewLifecycleOwner, Observer {
             val point = GeoPoint(it.latitude, it.longitude)
-            mvMap.controller.apply {
+            binding.mvMap.controller.apply {
                 if (it.canAnimateTo) animateTo(point) else setCenter(point)
             }
         })
     }
 
     private fun getMarker(item: WidgetDetailsLocationViewModel.MapMarkerItem) =
-        Marker(mvMap).apply {
+        Marker(binding.mvMap).apply {
             position = GeoPoint(item.latitude, item.longitude)
             setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            icon = activity!!.getDrawable(
+            icon = requireActivity().getDrawable(
                 if (item.selected) {
                     R.drawable.ic_location_on_black_32dp
                 } else {
@@ -210,10 +218,10 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
 
     private fun bindLocationSearchField() {
         (activity?.getSystemService(Context.SEARCH_SERVICE) as? SearchManager).let {
-            svLocation.setSearchableInfo(it?.getSearchableInfo(activity?.componentName))
+            binding.svLocation.setSearchableInfo(it?.getSearchableInfo(activity?.componentName))
         }
-        SearchViewUtil.fixMicIconBackground(svLocation, R.drawable.rounded_padded_clickable)
-        svLocation.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        SearchViewUtil.fixMicIconBackground(binding.svLocation, R.drawable.rounded_padded_clickable)
+        binding.svLocation.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String) = true
 
             override fun onQueryTextChange(newText: String) =
@@ -222,12 +230,12 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
     }
 
     private fun bindUseDeviceLocationButton() {
-        mbUseMyLocationSearch.setOnClickListener { viewModel.clickUseDeviceLocation() }
-        mbUseMyLocationSearchMap.setOnClickListener { viewModel.clickUseDeviceLocation() }
+        binding.mbUseMyLocationSearch.setOnClickListener { viewModel.clickUseDeviceLocation() }
+        binding.mbUseMyLocationSearchMap.setOnClickListener { viewModel.clickUseDeviceLocation() }
     }
 
     private val deviceLocationProgressDialog by lazy {
-        MaterialDialog(activity!!)
+        MaterialDialog(requireActivity())
             .title(R.string.getting_location)
             .positiveButton(R.string.cancel) {
                 viewModel.onDeviceLocationCancel()
@@ -236,7 +244,7 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
     }
 
     private val deviceLocationFailedDialog by lazy {
-        MaterialDialog(activity!!)
+        MaterialDialog(requireActivity())
             .title(R.string.couldnt_get_location)
             .negativeButton(R.string.retry) {
                 viewModel.onDeviceLocationFailedRetryClick()
@@ -266,11 +274,11 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
     }
 
     private fun bindLocationSearchResults() {
-        rvLocationSuggestions.adapter = SuggestionRecyclerAdapter(
+        binding.rvLocationSuggestions.adapter = SuggestionRecyclerAdapter(
             clickListener = { locationId -> viewModel.clickSuggestion(locationId) }
         )
         viewModel.searchSuggestionsLiveData.observe(viewLifecycleOwner, Observer {
-            (rvLocationSuggestions.adapter as SuggestionRecyclerAdapter).setItems(it)
+            (binding.rvLocationSuggestions.adapter as SuggestionRecyclerAdapter).setItems(it)
         })
     }
 }
@@ -286,7 +294,11 @@ private class SuggestionRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        SuggestionViewHolder(parent.inflate(parent.context, R.layout.view_location_suggestion_item))
+        SuggestionViewHolder(
+            ViewLocationSuggestionItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
 
     override fun getItemCount() = items.size
 
@@ -295,14 +307,15 @@ private class SuggestionRecyclerAdapter(
 
 }
 
-private class SuggestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+private class SuggestionViewHolder(private val binding: ViewLocationSuggestionItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(
         item: WidgetDetailsLocationViewModel.SuggestionItem,
         clickListener: (Int) -> Unit
-    ) = with(itemView) {
+    ) = with(binding) {
         val (id, locationName, country) = item
         tvName.text = locationName
         tvCountry.text = country
-        setOnClickListener { clickListener(id) }
+        root.setOnClickListener { clickListener(id) }
     }
 }

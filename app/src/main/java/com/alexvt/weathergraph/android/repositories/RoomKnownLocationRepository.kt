@@ -88,7 +88,7 @@ class RoomKnownLocationRepository @Inject constructor(
             log.d("Populated location DB from assets.")
         }
 
-    override fun getRawDataPath(): String = database.openHelper.writableDatabase.path
+    override fun getRawDataPath(): String? = database.openHelper.writableDatabase.path
 
     override fun getProviderName() = "OpenWeatherMap"
 

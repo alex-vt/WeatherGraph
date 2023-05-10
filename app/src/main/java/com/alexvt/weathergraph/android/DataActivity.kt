@@ -17,11 +17,11 @@ import com.afollestad.assent.Permission
 import com.afollestad.assent.askForPermissions
 import com.afollestad.assent.rationale.createDialogRationale
 import com.alexvt.weathergraph.R
+import com.alexvt.weathergraph.databinding.ActivityDataBinding
+import com.alexvt.weathergraph.databinding.ViewDataSourceBinding
 import com.alexvt.weathergraph.viewmodel.DataViewModel
 import com.alexvt.weathergraph.viewmodel.EventObserver
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_data.*
-import kotlinx.android.synthetic.main.view_data_source.view.*
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -38,9 +38,15 @@ class DataActivity : BaseAppCompatActivity(R.layout.activity_data) {
         ViewModelProvider(this, vmFactory)[DataViewModel::class.java]
     }
 
+    private lateinit var binding: ActivityDataBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        binding = ActivityDataBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         bindWeatherSource()
         bindAirQualitySource()
@@ -50,32 +56,33 @@ class DataActivity : BaseAppCompatActivity(R.layout.activity_data) {
 
     private fun bindWeatherSource() = bindSource(
         kind = "Weather",
-        view = vWeatherData,
+        viewBinding = binding.vWeatherData,
         source = viewModel.getWeatherDataProvider()
     )
 
     private fun bindAirQualitySource() = bindSource(
         kind = "Air Quality",
-        view = vAirQuality,
+        viewBinding = binding.vAirQuality,
         source = viewModel.getAirQualityProvider()
     )
 
     private fun bindKnownLocationsSource() = bindSource(
         kind = "Location Names",
-        view = vLocationNames,
+        viewBinding = binding.vLocationNames,
         source = viewModel.getKnownLocationsProvider(),
         exportListener = { exportKnownLocations() }
     )
 
     private fun bindSource(
-        kind: String, view: View, source: DataViewModel.DataSource,
+        kind: String, viewBinding: ViewDataSourceBinding, source: DataViewModel.DataSource,
         exportListener: (() -> Unit)? = null
     ) {
-        view.mtvTitle.text = getString(R.string.data_source_title, kind, source.name)
-        view.mbLink.text = source.shortLink
-        view.mbLink.setOnClickListener { viewModel.clickLink(source.link) }
-        view.mbExport.visibility = if (source.rawDataPath != null) View.VISIBLE else View.GONE
-        view.mbExport.setOnClickListener { exportListener?.invoke() }
+        viewBinding.mtvTitle.text = getString(R.string.data_source_title, kind, source.name)
+        viewBinding.mbLink.text = source.shortLink
+        viewBinding.mbLink.setOnClickListener { viewModel.clickLink(source.link) }
+        viewBinding.mbExport.visibility =
+            if (source.rawDataPath != null) View.VISIBLE else View.GONE
+        viewBinding.mbExport.setOnClickListener { exportListener?.invoke() }
     }
 
     private val exportDbRequestCode = 0
@@ -128,7 +135,7 @@ class DataActivity : BaseAppCompatActivity(R.layout.activity_data) {
     private fun bindNavigation() {
         viewModel.backNavigationLiveData.observe(this, EventObserver { finish() })
         viewModel.linkNavigationLiveData.observe(this, EventObserver { openLink(it) })
-        fabOk.setOnClickListener { viewModel.clickBack() }
+        binding.fabOk.setOnClickListener { viewModel.clickBack() }
     }
 
     override fun onSupportNavigateUp() = viewModel.clickBack().let { true }

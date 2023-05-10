@@ -95,7 +95,7 @@ class ViewDrawTargetRepository @Inject constructor(
             action = AppWidgetManager.ACTION_APPWIDGET_UPDATE + System.currentTimeMillis()
             putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, targetId)
         }.let { intent ->
-            PendingIntent.getActivity(context, 0, intent, 0)
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         }
 
 }

@@ -32,6 +32,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,6 +47,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
@@ -62,6 +64,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity"/>
 
         <activity
@@ -70,6 +73,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity"/>
 
         <activity
@@ -78,6 +82,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity"/>
 
         <activity
@@ -86,6 +91,7 @@
             android:launchMode="singleTop"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
+            android:exported="true"
             tools:ignore="LockedOrientationActivity"/>
 
         <activity
@@ -96,19 +102,22 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity"/>
 
-        <receiver android:name=".android.OnBootReceiver">
+        <receiver android:name=".android.OnBootReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".android.OnAppUpdatedReceiver">
+        <receiver android:name=".android.OnAppUpdatedReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".android.WidgetEventAppWidgetProvider">
+        <receiver android:name=".android.WidgetEventAppWidgetProvider"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

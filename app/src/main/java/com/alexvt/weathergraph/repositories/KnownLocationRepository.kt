@@ -12,7 +12,7 @@ interface KnownLocationRepository {
 
     fun getAll(): List<OwmLocation>
 
-    fun getRawDataPath(): String
+    fun getRawDataPath(): String?
 
     fun getProviderName(): String
 

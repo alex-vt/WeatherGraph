@@ -12,15 +12,18 @@
         android:title="Share"
         app:showAsAction="ifRoom"
         android:visible="false"
+        app:iconTint="@color/colorTextPrimary"
         android:icon="@drawable/ic_share_black_24dp" />
     <item
         android:id="@+id/iSettings"
         android:title="Settings"
         app:showAsAction="never"
+        app:iconTint="@color/colorTextPrimary"
         android:icon="@drawable/ic_settings_black_24dp" />
     <item
         android:id="@+id/iInfo"
         android:title="Legal Info"
         app:showAsAction="never"
+        app:iconTint="@color/colorTextPrimary"
         android:icon="@drawable/ic_info_outline_black_24dp" />
 </menu>

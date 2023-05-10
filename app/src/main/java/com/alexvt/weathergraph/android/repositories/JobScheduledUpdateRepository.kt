@@ -7,7 +7,15 @@
 package com.alexvt.weathergraph.android.repositories
 
 import android.content.Context
-import androidx.work.*
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import com.alexvt.weathergraph.repositories.LogRepository
 import com.alexvt.weathergraph.repositories.ScheduledUpdateRepository
 import dagger.android.HasAndroidInjector
@@ -48,7 +56,7 @@ class JobScheduledUpdateRepository @Inject constructor(
                 .setConstraints(Constraints.Builder().build())
                 .setBackoffCriteria(
                     BackoffPolicy.EXPONENTIAL,
-                    PeriodicWorkRequest.MIN_BACKOFF_MILLIS,
+                    WorkRequest.DEFAULT_BACKOFF_DELAY_MILLIS,
                     TimeUnit.MILLISECONDS
                 )
                 .build()
@@ -62,5 +70,5 @@ class JobScheduledUpdateRepository @Inject constructor(
         updateTimeSubject.onNext(id)
     }
 
-    override fun getUpdateTimes() : Observable<String> = updateTimeSubject
+    override fun getUpdateTimes(): Observable<String> = updateTimeSubject
 }

@@ -350,7 +350,7 @@ class WeatherWidgetRepository @Inject constructor(
 
     private fun getMinId() = localRepository.getAll()
         .map { it.widgetId }
-        .filter { it < 0 }.min() ?: 0
+        .filter { it < 0 }.minOrNull() ?: 0
 
     fun updateAndGet(widget: WeatherWidget, saveResult: Boolean = true) = runBlocking {
         try {

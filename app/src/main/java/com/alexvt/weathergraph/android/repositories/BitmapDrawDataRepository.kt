@@ -44,8 +44,8 @@ class BitmapDrawDataRepository @Inject constructor(
     }
 
     private fun List<Pair<Double, String>>.normalize() = run {
-        val min = map { it.first }.min() ?: 0.0
-        val max = map { it.first }.max() ?: 1.0
+        val min = map { it.first }.minOrNull() ?: 0.0
+        val max = map { it.first }.maxOrNull() ?: 1.0
         map {
             Pair(
                 it.first.normalizedBetween(min, max),
@@ -279,9 +279,9 @@ class BitmapDrawDataRepository @Inject constructor(
 
     private fun Double.toCelsiusText() = "${round(this + kelvinToCelsiusDiff).toInt()}˚"
 
-    private fun WeatherWidget.getTempMinText() = getTemperatures().min()!!.toCelsiusText()
+    private fun WeatherWidget.getTempMinText() = getTemperatures().min().toCelsiusText()
 
-    private fun WeatherWidget.getTempMaxText() = getTemperatures().max()!!.toCelsiusText()
+    private fun WeatherWidget.getTempMaxText() = getTemperatures().max().toCelsiusText()
 
     private fun WeatherWidget.getTempCurrentText() = getTemperatures().first().toCelsiusText()
 
@@ -292,8 +292,8 @@ class BitmapDrawDataRepository @Inject constructor(
         getGraphBounds(widget).bottom
 
     private fun Canvas.getCurrentTempScaleY(widget: WeatherWidget) = getProportionalTargetPixel(
-        sourceLow = widget.getTemperatures().min()!!,
-        sourceHigh = widget.getTemperatures().max()!!,
+        sourceLow = widget.getTemperatures().min(),
+        sourceHigh = widget.getTemperatures().max(),
         source = widget.getTemperatures().first(),
         targetLow = getMinTempScaleY(widget),
         targetHigh = getMaxTempScaleY(widget)
@@ -388,7 +388,7 @@ class BitmapDrawDataRepository @Inject constructor(
         getTempCurrentText().getTextWidth(getTextPaint(isBold = true)),
         getTempMaxText().getTextWidth(getTextPaint()),
         getLocalDayOfWeekText(System.currentTimeMillis()).getTextWidth(getTextPaint())
-    ).max()!!
+    ).max()
 
     private fun getTemperatureBottomMargin() = 35
 
@@ -398,7 +398,7 @@ class BitmapDrawDataRepository @Inject constructor(
         getPrecipMinText().getTextWidth(getTextPaint()),
         getPrecipMaxText().getTextWidth(getTextPaint()),
         getPrecipUnit().getTextWidth(getTextPaint(isSmall = true))
-    ).max()!!
+    ).max()
 
     private fun WeatherWidget.getPrecipScaleSizeMmHour() = visualSettings.precipitationCutoffValue
 
@@ -543,12 +543,12 @@ class BitmapDrawDataRepository @Inject constructor(
 
     private fun WeatherWidget.getTimeRange() =
         with(weatherData.temperatureKelvinPoints.map { it.second }) {
-            Pair(System.currentTimeMillis(), max()!!)
+            Pair(System.currentTimeMillis(), max())
         }
 
     private fun WeatherWidget.getTemperatureRange() =
         with(getTemperatures()) {
-            Pair(min()!!, max()!!)
+            Pair(min(), max())
         }
 
     private fun WeatherWidget.getTemperatures() =

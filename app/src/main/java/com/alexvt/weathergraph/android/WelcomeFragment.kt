@@ -35,7 +35,7 @@ class WelcomeFragment : BaseFragment(R.layout.fragment_blank) {
         )
         viewModel.welcomeDialogLiveData.observe(viewLifecycleOwner, Observer { showWelcome ->
             if (!showWelcome) return@Observer
-            MaterialDialog(activity!!, BottomSheet()).show {
+            MaterialDialog(requireActivity(), BottomSheet()).show {
                 title(R.string.welcome)
                 message(R.string.weather_graph_can_visualize)
                 cancelOnTouchOutside(false)

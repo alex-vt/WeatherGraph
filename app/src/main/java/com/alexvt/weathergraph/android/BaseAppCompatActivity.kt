@@ -59,7 +59,12 @@ abstract class BaseAppCompatActivity(
         startActivity(Intent(this, activityClass))
 
     protected fun openLink(linkString: String) = CustomTabsIntent.Builder().apply {
-        TypedValue().apply { theme.resolveAttribute(R.attr.colorPrimary, this, true) }.data
-            .let { setToolbarColor(it) }
+        TypedValue().apply {
+            theme.resolveAttribute(
+                androidx.appcompat.R.attr.colorPrimary,
+                this,
+                true
+            )
+        }.data.let { setToolbarColor(it) }
     }.build().launchUrl(this, Uri.parse(linkString))
 }

@@ -6,29 +6,45 @@
 
 package com.alexvt.weathergraph.android
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.fragment.app.Fragment
+import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.alexvt.weathergraph.R
+import com.alexvt.weathergraph.databinding.FragmentWidgetDetailsDataBinding
+import com.alexvt.weathergraph.databinding.ViewMaterial5ButtonGroupBinding
+import com.alexvt.weathergraph.databinding.ViewWidgetDetailsDataItemBinding
 import com.alexvt.weathergraph.entities.CloudPercentUnit
 import com.alexvt.weathergraph.entities.PrecipitationUnit
 import com.alexvt.weathergraph.entities.TemperatureUnit
 import com.alexvt.weathergraph.entities.WindSpeedUnit
 import com.alexvt.weathergraph.viewmodel.EventObserver
 import com.alexvt.weathergraph.viewmodel.WidgetDetailsDataViewModel
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.switchmaterial.SwitchMaterial
-import kotlinx.android.synthetic.main.fragment_widget_details_data.*
-import kotlinx.android.synthetic.main.view_material_5_button_group.view.*
-import kotlinx.android.synthetic.main.view_widget_details_data_item.view.*
 
 class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_data) {
 
     private val viewModel by lazy {
         viewModelProvider[WidgetDetailsDataViewModel::class.java]
+    }
+
+    private var _binding: FragmentWidgetDetailsDataBinding? = null
+    private val binding get() = _binding!! // see https://developer.android.com/topic/libraries/view-binding#fragments
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentWidgetDetailsDataBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -49,21 +65,21 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
     }
 
     private fun bindShowDays() = bindToggleDataOptionGroup(
-        buttonGroup = vShowDaysButtons,
+        buttonsBinding = binding.vShowDaysButtons,
         optionList = viewModel.showDaysAheadOptions,
         optionIndexLiveData = viewModel.showDaysAheadIndexLiveData,
         optionIndexClickListener = { viewModel.setShowForIndex(it) }
     )
 
     private fun bindUpdateEvery() = bindToggleDataOptionGroup(
-        buttonGroup = vUpdateTimeButtons,
+        buttonsBinding = binding.vUpdateTimeButtons,
         optionList = viewModel.updateTimeHourOptions,
         optionIndexLiveData = viewModel.updateEveryIndexLiveData,
         optionIndexClickListener = { viewModel.setUpdateEveryIndex(it) }
     )
 
     private fun bindTemperature() = bindNamedToggleDataOptionGroup(
-        viewGroup = vTemperature,
+        toggleBinding = binding.vTemperature,
         title = "Temperature",
         titleSwitchEnabled = false,
         unitList = viewModel.temperatureUnitOptions.map {
@@ -78,7 +94,7 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
     )
 
     private fun bindCloudPercent() = bindNamedToggleDataOptionGroup(
-        viewGroup = vCloudPercent,
+        toggleBinding = binding.vCloudPercent,
         title = "Show Cloudiness",
         switchedOnLiveData = viewModel.cloudPercentEnabledLiveData,
         switchListener = { viewModel.setCloudPercentEnabled(it) },
@@ -93,7 +109,7 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
     )
 
     private fun bindPrecipitation() = bindNamedToggleDataOptionGroup(
-        viewGroup = vPrecipitation,
+        toggleBinding = binding.vPrecipitation,
         title = "Show Precipitation",
         switchedOnLiveData = viewModel.precipitationEnabledLiveData,
         switchListener = { viewModel.setPrecipitationEnabled(it) },
@@ -111,7 +127,7 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
     )
 
     private fun bindWindSpeed() = bindNamedToggleDataOptionGroup(
-        viewGroup = vWindSpeed,
+        toggleBinding = binding.vWindSpeed,
         title = "Show Wind Speed",
         switchedOnLiveData = viewModel.windSpeedEnabledLiveData,
         switchListener = { viewModel.setWindSpeedEnabled(it) },
@@ -134,28 +150,29 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
     private fun bindAirQuality() = viewModel.airQualityEnabledLiveData.observe(
         viewLifecycleOwner,
         Observer { (checked, available) ->
-            smAirQuality.setOnCheckedChangeListener { _, isChecked ->
+            binding.smAirQuality.setOnCheckedChangeListener { _, isChecked ->
                 if (available) viewModel.setAirQualityEnabled(isChecked) else null
             }
-            smAirQuality.isChecked = checked
-            smAirQuality.isEnabled = available
-            mtvAirQualityNotAvailable.visibility = if (available) View.GONE else View.VISIBLE
+            binding.smAirQuality.isChecked = checked
+            binding.smAirQuality.isEnabled = available
+            binding.mtvAirQualityNotAvailable.visibility =
+                if (available) View.GONE else View.VISIBLE
         })
 
     private fun bindSunriseSunsetTime() = bindToggleDataOption(
-        switch = smSunriseSunset,
+        switch = binding.smSunriseSunset,
         switchedOnLiveData = viewModel.sunriseSunsetEnabledLiveData,
         switchListener = { viewModel.setSunriseSunsetEnabled(it) }
     )
 
     private fun bindUseTime24h() = bindToggleDataOption(
-        switch = smTime24h,
+        switch = binding.smTime24h,
         switchedOnLiveData = viewModel.time24hEnabledLiveData,
         switchListener = { viewModel.setTime24hEnabled(it) }
     )
 
     private fun bindDataSources() {
-        mbDataSources.setOnClickListener { viewModel.openDataSources() }
+        binding.mbDataSources.setOnClickListener { viewModel.openDataSources() }
         viewModel.dataSourcesNavigationLiveData.observe(viewLifecycleOwner, EventObserver {
             startActivity(DataActivity::class.java)
         })
@@ -163,14 +180,16 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
 
 
     private fun bindToggleDataOptionGroup(
-        buttonGroup: View,
+        buttonsBinding: ViewMaterial5ButtonGroupBinding,
         optionList: List<String>,
         optionIndexLiveData: LiveData<Int>,
         optionIndexClickListener: (Int) -> Unit
     ) {
-        fillToggleGroupWithOptions(buttonGroup, optionList)
-        optionIndexLiveData.observe(viewLifecycleOwner, Observer { selectButton(buttonGroup, it) })
-        setButtonClickListeners(buttonGroup, optionIndexClickListener)
+        fillToggleGroupWithOptions(buttonsBinding, optionList)
+        optionIndexLiveData.observe(
+            viewLifecycleOwner,
+            Observer { selectButton(buttonsBinding, it) })
+        setButtonClickListeners(buttonsBinding, optionIndexClickListener)
     }
 
     private fun bindToggleDataOption(
@@ -183,7 +202,7 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
     }
 
     private fun bindNamedToggleDataOptionGroup(
-        viewGroup: View,
+        toggleBinding: ViewWidgetDetailsDataItemBinding,
         title: String,
         titleSwitchEnabled: Boolean = true,
         switchedOnLiveData: LiveData<Boolean>? = null,
@@ -195,40 +214,49 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
         unitIndexClickListener: (Int) -> Unit,
         cutoffIndexClickListener: ((Int) -> Unit)? = null
     ) {
-        fillToggleWithText(viewGroup, title, titleSwitchEnabled)
+        fillToggleWithText(toggleBinding, title, titleSwitchEnabled)
         switchedOnLiveData?.observe(viewLifecycleOwner, Observer {
-            viewGroup.smTitle.isChecked = it
+            toggleBinding.smTitle.isChecked = it
             with(if (it) View.VISIBLE else View.GONE) { // todo animate
-                viewGroup.vUnits.visibility = this
-                viewGroup.vCutoff.post {
+                toggleBinding.vUnits.visibility = this
+                toggleBinding.vCutoff.post {
                     if (cutoffOptionsLiveData != null) {
-                        viewGroup.vCutoff.visibility = this
+                        toggleBinding.vCutoff.visibility = this
                     }
                 }
             }
         })
         switchListener?.let { listener ->
-            viewGroup.smTitle.setOnCheckedChangeListener { _, isChecked -> listener(isChecked) }
+            toggleBinding.smTitle.setOnCheckedChangeListener { _, isChecked -> listener(isChecked) }
         }
-        fillToggleGroupWithOptions(viewGroup.vUnits, unitList)
+        fillToggleGroupWithOptions(toggleBinding.vUnitButtons, unitList)
         cutoffOptionsLiveData?.observe(viewLifecycleOwner, Observer {
-            fillToggleGroupWithOptions(viewGroup.vCutoff, it)
+            fillToggleGroupWithOptions(toggleBinding.vLimitButtons, it)
         })
         unitIndexLiveData.observe(viewLifecycleOwner, Observer {
-            selectButton(viewGroup.vUnits, it)
-            viewGroup.vCutoff.mtvMaxValue.text = unitList[it]
+            selectButton(toggleBinding.vUnitButtons, it)
+            toggleBinding.mtvMaxValue.text = unitList[it]
         })
         cutoffIndexLiveData?.observe(viewLifecycleOwner, Observer {
-            selectButton(viewGroup.vCutoff, it)
+            selectButton(toggleBinding.vLimitButtons, it)
         })
-        unitIndexClickListener.let { setButtonClickListeners(viewGroup.vUnits, it) }
-        cutoffIndexClickListener?.let { setButtonClickListeners(viewGroup.vCutoff, it) }
+        unitIndexClickListener.let { setButtonClickListeners(toggleBinding.vUnitButtons, it) }
+        cutoffIndexClickListener?.let { setButtonClickListeners(toggleBinding.vLimitButtons, it) }
     }
 
-    private fun fillToggleGroupWithOptions(view: View, options: List<String>) = with(view) {
-        listOf(vButton1, vButton2, vButton3, vButton4, vButton5).map { it as MaterialButton }
+    private fun fillToggleGroupWithOptions(
+        binding: ViewMaterial5ButtonGroupBinding,
+        options: List<String>
+    ) = with(view) {
+        listOf(
+            binding.vButton1,
+            binding.vButton2,
+            binding.vButton3,
+            binding.vButton4,
+            binding.vButton5
+        ).map { it.mbButton }
     }.let { buttons ->
-        view.visibility = View.VISIBLE
+        binding.root.visibility = View.VISIBLE
         options.forEachIndexed { index, optionText ->
             buttons[index].apply {
                 visibility = View.VISIBLE
@@ -237,20 +265,39 @@ class WidgetDetailsDataFragment : BaseFragment(R.layout.fragment_widget_details_
         }
     }
 
-    private fun selectButton(view: View, index: Int) = with(view) {
-        listOf(vButton1, vButton2, vButton3, vButton4, vButton5).map { it as MaterialButton }
+    private fun selectButton(binding: ViewMaterial5ButtonGroupBinding, index: Int) = with(view) {
+        listOf(
+            binding.vButton1,
+            binding.vButton2,
+            binding.vButton3,
+            binding.vButton4,
+            binding.vButton5
+        ).map { it.mbButton }
     }.let { buttons ->
         buttons[index].isChecked = true
     }
 
-    private fun setButtonClickListeners(view: View, onClick: (Int) -> Unit) = with(view) {
-        listOf(vButton1, vButton2, vButton3, vButton4, vButton5).map { it as MaterialButton }
+    private fun setButtonClickListeners(
+        binding: ViewMaterial5ButtonGroupBinding,
+        onClick: (Int) -> Unit
+    ) = with(view) {
+        listOf(
+            binding.vButton1,
+            binding.vButton2,
+            binding.vButton3,
+            binding.vButton4,
+            binding.vButton5
+        ).map { it.mbButton }
     }.mapIndexed { index, button ->
         button.setOnClickListener { onClick(index) }
     }
 
-    private fun fillToggleWithText(view: View, text: String, enable: Boolean = true) {
-        view.smTitle.text = text
-        view.smTitle.isEnabled = enable
+    private fun fillToggleWithText(
+        binding: ViewWidgetDetailsDataItemBinding,
+        text: String,
+        enable: Boolean = true
+    ) {
+        binding.smTitle.text = text
+        binding.smTitle.isEnabled = enable
     }
 }

@@ -7,35 +7,22 @@
 package com.alexvt.weathergraph.android.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Resources
-import android.graphics.Color
-import android.util.TypedValue
 import android.view.Menu
 import android.view.View
-import android.widget.ImageView
-import androidx.appcompat.view.menu.ActionMenuItem
 import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuItemImpl
-import androidx.appcompat.widget.SearchView
-import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.iterator
-import com.alexvt.weathergraph.R
+import androidx.appcompat.view.menu.MenuPopupHelper
 
 object MenuUtil {
 
     @SuppressLint("RestrictedApi")
-    fun Menu?.setVisibleIcons(theme: Resources.Theme) {
-        (this as? MenuBuilder)?.setOptionalIconsVisible(true)
-        this?.iterator()?.forEach {
-            if ((it as? MenuItemImpl)?.requiresOverflow() == true) {
-                var drawable = it.icon
-                drawable = DrawableCompat.wrap(drawable)
-                TypedValue().apply {
-                    theme.resolveAttribute(R.attr.colorOnSurface, this, true)
-                    DrawableCompat.setTint(drawable, data)
-                }
-                it.icon = drawable
+    fun Menu.setVisibleIcons(context: Context, theme: Resources.Theme, anchorView: View) {
+        (this as MenuBuilder).run {
+            MenuPopupHelper(context, this, anchorView).run {
+                setForceShowIcon(true)
             }
+            setOptionalIconsVisible(true)
         }
     }
 

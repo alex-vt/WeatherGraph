@@ -20,12 +20,12 @@ object SearchViewUtil {
      */
     fun fixMicIconBackground(svMain: SearchView, backgroundColorRes: Int) {
         // Rounded mic icon background that doesn't extend outsize the rounded search view
-        val ivMicButton: ImageView? = svMain.findViewById(R.id.search_voice_btn)
+        val ivMicButton: ImageView? = svMain.findViewById(androidx.appcompat.R.id.search_voice_btn)
         if (ivMicButton != null) {
             ivMicButton.setBackgroundResource(backgroundColorRes)
         }
         // Removing the thin gray line visual artifact on the mic icon background
-        val llSubmitArea: View? = svMain.findViewById(R.id.submit_area)
+        val llSubmitArea: View? = svMain.findViewById(androidx.appcompat.R.id.submit_area)
         if (llSubmitArea != null) {
             llSubmitArea.setBackgroundColor(Color.TRANSPARENT)
             llSubmitArea.setPadding(0, 0, 0, 0)

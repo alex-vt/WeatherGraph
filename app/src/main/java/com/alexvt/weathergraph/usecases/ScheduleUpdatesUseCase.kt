@@ -47,7 +47,7 @@ class ScheduleUpdatesUseCase private constructor(
     fun scheduleUpdates() {
         val minPeriod = widgetRepository.getCurrentAll().map {
             it.dataSource.updatePeriodMillis
-        }.min()
+        }.minOrNull()
         if (minPeriod != null) {
             log.d("Rescheduling widget updates with requested period ${minPeriod / 1000} s")
             scheduledUpdateRepository.schedule(minPeriod)

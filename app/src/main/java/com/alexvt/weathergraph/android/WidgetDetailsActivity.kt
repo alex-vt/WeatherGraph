@@ -28,13 +28,11 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
 import com.alexvt.weathergraph.R
 import com.alexvt.weathergraph.android.util.MenuUtil.setVisibleIcons
+import com.alexvt.weathergraph.databinding.ActivityWidgetDetailsBinding
 import com.alexvt.weathergraph.viewmodel.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textview.MaterialTextView
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_widget_details.*
-import kotlinx.android.synthetic.main.activity_widget_details.view.mtvToday
-import kotlinx.android.synthetic.main.view_day_temperature.view.*
 import javax.inject.Inject
 
 
@@ -48,6 +46,8 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
         ViewModelProvider(this, vmFactory)[WidgetDetailsViewModel::class.java]
     }
 
+    private lateinit var binding: ActivityWidgetDetailsBinding
+
     override fun provideSubViewModels() = listOf(
         viewModel.welcomeViewModel,
         viewModel.locationViewModel, viewModel.dataViewModel, viewModel.appearanceViewModel
@@ -56,6 +56,10 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        binding = ActivityWidgetDetailsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         bindWelcome()
         bindItem()
@@ -80,20 +84,35 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
         .add(WelcomeFragment(), "Welcome").commit()
 
     private fun bindItem() {
-        ivWidget.post { viewModel.setWidgetSize(Pair(ivWidget.width, ivWidget.height)) }
+        binding.ivWidget.post {
+            viewModel.setWidgetSize(
+                Pair(
+                    binding.ivWidget.width,
+                    binding.ivWidget.height
+                )
+            )
+        }
         viewModel.loadById(editedWidgetDrawTargetId)
         viewModel.widgetLiveData.observe { (_, locationName, imageData) ->
-            tvCurrentLocation.text = getString(R.string.location, locationName)
+            binding.tvCurrentLocation.text = getString(R.string.location, locationName)
             title = locationName
-            ivWidget.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
+            binding.ivWidget.setImageBitmap(
+                BitmapFactory.decodeByteArray(
+                    imageData,
+                    0,
+                    imageData.size
+                )
+            )
         }
         viewModel.isOnWallpaperLiveData.observe { isOnWallpaper ->
-            ivWidgetGrayBackground.visibility = if (isOnWallpaper) View.GONE else View.VISIBLE
-            ivWholeWallpaperBackground.visibility = if (isOnWallpaper) View.VISIBLE else View.GONE
-            ivWholeWallpaperBackground.setImageDrawable(
+            binding.ivWidgetGrayBackground.visibility =
+                if (isOnWallpaper) View.GONE else View.VISIBLE
+            binding.ivWholeWallpaperBackground.visibility =
+                if (isOnWallpaper) View.VISIBLE else View.GONE
+            binding.ivWholeWallpaperBackground.setImageDrawable(
                 if (isOnWallpaper) WallpaperManager.getInstance(this).drawable else null
             )
-            clEditable.setBackgroundColor(
+            binding.clEditable.setBackgroundColor(
                 if (isOnWallpaper) Color.TRANSPARENT else getColor(R.color.colorGray)
             )
         }
@@ -101,10 +120,10 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
 
     private fun bindDetails() {
         viewModel.dayWeatherLiveData.observe { items ->
-            cvWeatherDetails.visibility = View.VISIBLE
+            binding.cvWeatherDetails.visibility = View.VISIBLE
             items.forEachIndexed { index, item ->
                 with(dayTemperatureViews[index]) {
-                    mtvToday.visibility = if (item.isToday) View.VISIBLE else View.GONE
+                    binding.mtvToday.visibility = if (item.isToday) View.VISIBLE else View.GONE
                     mtvDate.text = getString(R.string.week_date, item.weekDayText, item.dateText)
                     sTemperatures.values = listOf(
                         item.minTempNormalized.toFloat(),
@@ -127,9 +146,9 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
             }
         }
         viewModel.sunriseSunsetLiveData.observe { (sunriseTime, sunsetTime) ->
-            mtvSunrise.text = getString(R.string.sunrise, sunriseTime)
-            mtvSunset.text = getString(R.string.sunset, sunsetTime)
-            cvSunriseSunset.visibility = View.VISIBLE
+            binding.mtvSunrise.text = getString(R.string.sunrise, sunriseTime)
+            binding.mtvSunset.text = getString(R.string.sunset, sunsetTime)
+            binding.cvSunriseSunset.visibility = View.VISIBLE
         }
     }
 
@@ -153,10 +172,18 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
         labelTextView.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
-    private val dayTemperatureViews by lazy { listOf(vDay1, vDay2, vDay3, vDay4, vDay5) }
+    private val dayTemperatureViews by lazy {
+        listOf(
+            binding.vDay1,
+            binding.vDay2,
+            binding.vDay3,
+            binding.vDay4,
+            binding.vDay5
+        )
+    }
 
     private fun bindEditButton() =
-        fabEdit.setOnClickListener { viewModel.expandEditor(true) }
+        binding.fabEdit.setOnClickListener { viewModel.expandEditor(true) }
 
     private fun bindBottomNavigationIcons() =
         ColorStateList(
@@ -170,8 +197,8 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
                 getColor(R.color.colorBackgroundTranslucent)
             )
         ).let {
-            bnView.itemTextColor = it
-            bnView.itemIconTintList = it
+            binding.bnView.itemTextColor = it
+            binding.bnView.itemIconTintList = it
         }
 
     private val menuToFragments by lazy {
@@ -196,7 +223,7 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
         })
         viewModel.bottomSheetSwipingAllowedLiveData.observe { swipeAllowed ->
             editorBehavior.swipeEnabled = swipeAllowed
-            vPullUpTab.visibility = if (swipeAllowed) View.VISIBLE else View.INVISIBLE
+            binding.vPullUpTab.visibility = if (swipeAllowed) View.VISIBLE else View.INVISIBLE
         }
         viewModel.editorExpandedLiveData.observe { expand ->
             editorBehavior.state = if (expand) {
@@ -208,7 +235,7 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
     }
 
     private fun bindBottomNavigation() {
-        bnView.setOnNavigationItemSelectedListener { menuItem ->
+        binding.bnView.setOnNavigationItemSelectedListener { menuItem ->
             viewModel.selectTab(
                 menuToFragments.indexOfFirst { (itemId, _) ->
                     itemId == menuItem.itemId
@@ -221,16 +248,17 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
             supportFragmentManager.beginTransaction()
                 .replace(R.id.flSettingSection, fragment)
                 .commit()
-            bnView.selectedItemId = itemId
+            binding.bnView.selectedItemId = itemId
         }
     }
 
     private val editorBehavior by lazy {
-        val layoutParams = rlBottomSheet.layoutParams as CoordinatorLayout.LayoutParams
+        val layoutParams = binding.rlBottomSheet.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.behavior as LockableBottomSheetBehavior
     }
 
-    private fun bindSaveButton() = fabSave.setOnClickListener { viewModel.clickSaveButton() }
+    private fun bindSaveButton() =
+        binding.fabSave.setOnClickListener { viewModel.clickSaveButton() }
 
     private fun bindDeleteMenu() {
         viewModel.removeDialogLiveData.observe { allowDialog ->
@@ -283,7 +311,7 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
 
     override fun onCreateOptionsMenu(menu: Menu?) =
         menuInflater.inflate(R.menu.widget_details_menu, menu).let {
-            menu.setVisibleIcons(theme)
+            menu?.setVisibleIcons(this, theme, binding.root)
             true
         }
 

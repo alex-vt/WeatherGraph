@@ -86,7 +86,7 @@ class UserViewWeatherDetailsUseCase private constructor(
 
     private fun Long.getZoneOffset() = ZoneOffset.ofTotalSeconds(toInt() / 1000)
 
-    private fun DailyTemperatureDataSet.regularCount() = map { it.second.count() }.max() ?: 0
+    private fun DailyTemperatureDataSet.regularCount() = map { it.second.count() }.maxOrNull() ?: 0
 
     private fun DayTemperatureDataSet.count() = this.second.count()
 
@@ -106,8 +106,8 @@ class UserViewWeatherDetailsUseCase private constructor(
                 } else {
                     null
                 },
-                minTempK = dataSet.getTemperatures().min()!!,
-                maxTempK = dataSet.getTemperatures().max()!!,
+                minTempK = dataSet.getTemperatures().min(),
+                maxTempK = dataSet.getTemperatures().max(),
                 timestamp = dataSet.first().let { (_, timestamp) -> timestamp },
                 timezoneShiftMillis = timezoneShiftMillis
             )
@@ -116,8 +116,8 @@ class UserViewWeatherDetailsUseCase private constructor(
     private fun Double.normalizeIn(min: Double, max: Double) = (this - min) / (max - min)
 
     private fun Double.normalizeIn(items: List<DailyTemperatureItem>) = normalizeIn(
-        items.map { it.minTempK }.min()!!,
-        items.map { it.maxTempK }.max()!!
+        items.map { it.minTempK }.min(),
+        items.map { it.maxTempK }.max()
     )
 
     private val unitMap = mapOf(

@@ -71,7 +71,7 @@ class LocationRepository @Inject constructor(
         for (location in remainingLocations) {
             if (includedLocations.size == takeMax) break
             val minDistanceToIncluded = includedLocations.map { it.distanceTo(location) }.min()
-            val willInclude = includedLocations.isEmpty() || minDistanceToIncluded!! > minDistance
+            val willInclude = includedLocations.isEmpty() || minDistanceToIncluded > minDistance
             if (willInclude) {
                 includedLocations.add(location)
             }

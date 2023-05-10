@@ -10,13 +10,13 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import com.alexvt.weathergraph.R
+import com.alexvt.weathergraph.databinding.ActivityLegalInfoBinding
 import com.alexvt.weathergraph.viewmodel.Event
 import com.alexvt.weathergraph.viewmodel.EventObserver
 import com.alexvt.weathergraph.viewmodel.LegalInfoViewModel
 import com.google.android.material.button.MaterialButton
 import com.mikepenz.aboutlibraries.LibsBuilder
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_legal_info.*
 import javax.inject.Inject
 
 
@@ -29,9 +29,15 @@ class LegalInfoActivity : BaseAppCompatActivity(R.layout.activity_legal_info) {
         ViewModelProvider(this, vmFactory)[LegalInfoViewModel::class.java]
     }
 
+    private lateinit var binding: ActivityLegalInfoBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        binding = ActivityLegalInfoBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         bindNavigation()
 
@@ -44,28 +50,28 @@ class LegalInfoActivity : BaseAppCompatActivity(R.layout.activity_legal_info) {
     private fun bindLicense() = bindSection(
         liveData = viewModel.licenseNavigationLiveData,
         liveDataListener = { startActivity(LicenseActivity::class.java) },
-        button = mbLicense,
+        button = binding.mbLicense,
         buttonListener = { viewModel.clickLicense() }
     )
 
     private fun bindDataAndPrivacyPolicy() = bindSection(
         liveData = viewModel.dataNavigationLiveData,
         liveDataListener = { startActivity(DataActivity::class.java) },
-        button = mbData,
+        button = binding.mbData,
         buttonListener = { viewModel.clickData() }
     )
 
     private fun bindThirdPartyLicenses() = bindSection(
         liveData = viewModel.thirdPartyLicensesNavigationLiveData,
         liveDataListener = { showThirdPartyLibraryInfo() },
-        button = mbLicensesThirdParty,
+        button = binding.mbLicensesThirdParty,
         buttonListener = { viewModel.clickLicensesThirdParty() }
     )
 
     private fun bindAboutApp() = bindSection(
         liveData = viewModel.aboutAppNavigationLiveData,
         liveDataListener = { openLink(getString(R.string.app_web_page_url)) },
-        button = mbAboutApp,
+        button = binding.mbAboutApp,
         buttonListener = { viewModel.clickAboutApp() }
     )
 
@@ -88,7 +94,7 @@ class LegalInfoActivity : BaseAppCompatActivity(R.layout.activity_legal_info) {
 
     private fun bindNavigation() {
         viewModel.backNavigationLiveData.observe(this, EventObserver { finish() })
-        fabOk.setOnClickListener { viewModel.clickBack() }
+        binding.fabOk.setOnClickListener { viewModel.clickBack() }
     }
 
     override fun onSupportNavigateUp() = viewModel.clickBack().let { true }

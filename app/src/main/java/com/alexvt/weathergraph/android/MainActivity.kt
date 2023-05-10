@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,7 +22,6 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.assent.Permission
@@ -29,21 +29,17 @@ import com.afollestad.assent.askForPermissions
 import com.afollestad.assent.rationale.createDialogRationale
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.callbacks.onDismiss
-import com.afollestad.materialdialogs.utils.MDUtil.inflate
 import com.alexvt.weathergraph.R
 import com.alexvt.weathergraph.android.util.MenuUtil.setVisibleIcons
+import com.alexvt.weathergraph.databinding.ActivityMainBinding
+import com.alexvt.weathergraph.databinding.ViewGraphWidgetItemBinding
+import com.alexvt.weathergraph.databinding.ViewMaterial5ButtonGroupBinding
 import com.alexvt.weathergraph.entities.AppTheme
 import com.alexvt.weathergraph.entities.SortingMethod
 import com.alexvt.weathergraph.viewmodel.EventObserver
 import com.alexvt.weathergraph.viewmodel.MainViewModel
-import com.alexvt.weathergraph.viewmodel.WelcomeViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.button.MaterialButton
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_graph_widget_item.view.*
-import kotlinx.android.synthetic.main.view_material_5_button_group.view.*
-import kotlinx.android.synthetic.main.weather_widget_initial.view.ivWidget
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -61,9 +57,15 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
         viewModel.welcomeViewModel
     )
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         bindWelcome()
         bindBackground()
@@ -93,7 +95,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
 
     private fun bindBackground() {
         viewModel.quickSettings.showWallpaperLiveData.observe(this, Observer { showWallpaper ->
-            ivBackground.setImageDrawable(
+            binding.ivBackground.setImageDrawable(
                 if (showWallpaper) WallpaperManager.getInstance(this).drawable else null
             )
         })
@@ -106,7 +108,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
                 R.dimen.view_widget_height.resourceToPx()
             )
         )
-        rvWidgetList.adapter = WidgetRecyclerAdapter(
+        binding.rvWidgetList.adapter = WidgetRecyclerAdapter(
             clickListener = { widgetId -> viewModel.clickWidget(widgetId) },
             longClickListener = { widgetId -> viewModel.longClickWidget(widgetId) }
         ).also { adapter ->
@@ -115,7 +117,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
     }
 
     private fun bindAddOrEdit() {
-        fabAdd.setOnClickListener { viewModel.clickAddButton() }
+        binding.fabAdd.setOnClickListener { viewModel.clickAddButton() }
         viewModel.addDialogLiveData.observe(this, Observer { allowDialog ->
             if (allowDialog == null) return@Observer
             MaterialDialog(this).show {
@@ -174,7 +176,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
             }
         })
         viewModel.optionsExpandedLiveData.observe(this, Observer { isCommandExpand ->
-            mbOptions.setImageResource(
+            binding.mbOptions.setImageResource(
                 if (isCommandExpand) {
                     R.drawable.ic_keyboard_arrow_down_black_24dp
                 } else {
@@ -187,11 +189,11 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
                 BottomSheetBehavior.STATE_COLLAPSED
             }
         })
-        mbOptions.setOnClickListener { viewModel.clickOptions() }
+        binding.mbOptions.setOnClickListener { viewModel.clickOptions() }
     }
 
     private val optionsBehavior by lazy {
-        val layoutParams = llBottomSheet.layoutParams as CoordinatorLayout.LayoutParams
+        val layoutParams = binding.llBottomSheet.layoutParams as CoordinatorLayout.LayoutParams
         layoutParams.behavior as BottomSheetBehavior
     }
 
@@ -204,28 +206,29 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
                 SortingMethod.LATITUDE -> "Latitude"
             }
         }
-        vSortingMethod.getOptionButtons().take(sortingMethods.size).mapIndexed { index, button ->
-            button.apply {
-                visibility = View.VISIBLE
-                text = nameMap[index].second
+        binding.vSortingMethod.getOptionButtons().take(sortingMethods.size)
+            .mapIndexed { index, button ->
+                button.apply {
+                    visibility = View.VISIBLE
+                    text = nameMap[index].second
+                }
+                button.setOnClickListener { viewModel.quickSettings.clickSortingMethod(index) }
             }
-            button.setOnClickListener { viewModel.quickSettings.clickSortingMethod(index) }
-        }
         viewModel.quickSettings.sortingMethodIndexLiveData.observe(this, Observer { index ->
-            vSortingMethod.getOptionButtons()[index].isChecked = true
+            binding.vSortingMethod.getOptionButtons()[index].isChecked = true
         })
     }
 
-    private fun View.getOptionButtons() =
+    private fun ViewMaterial5ButtonGroupBinding.getOptionButtons() =
         listOf(this.vButton1, this.vButton2, this.vButton3, this.vButton4, this.vButton5)
-            .map { it as MaterialButton }
+            .map { it.mbButton }
 
     private fun bindSortingDirection() {
-        mbAscending.setOnClickListener { viewModel.quickSettings.setSortingAscending(true) }
-        mbDescending.setOnClickListener { viewModel.quickSettings.setSortingAscending(false) }
+        binding.mbAscending.setOnClickListener { viewModel.quickSettings.setSortingAscending(true) }
+        binding.mbDescending.setOnClickListener { viewModel.quickSettings.setSortingAscending(false) }
         viewModel.quickSettings.sortingAscendingLiveData.observe(this, Observer { ascending ->
-            mbAscending.isChecked = ascending
-            mbDescending.isChecked = !ascending
+            binding.mbAscending.isChecked = ascending
+            binding.mbDescending.isChecked = !ascending
         })
     }
 
@@ -238,7 +241,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
                 AppTheme.LIGHT -> "Light"
             }
         }
-        vTheme.getOptionButtons().take(themes.size).mapIndexed { index, button ->
+        binding.vTheme.getOptionButtons().take(themes.size).mapIndexed { index, button ->
             button.apply {
                 visibility = View.VISIBLE
                 text = nameMap[index].second
@@ -246,23 +249,24 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
             button.setOnClickListener { viewModel.quickSettings.clickTheme(index) }
         }
         viewModel.quickSettings.themeIndexLiveData.observe(this, Observer { index ->
-            vTheme.getOptionButtons()[index].isChecked = true
+            binding.vTheme.getOptionButtons()[index].isChecked = true
         })
     }
 
     private fun bindStyle() {
         // todo palettes of varying size
-        vStyle.getOptionButtons().mapIndexed { index, button ->
+        binding.vStyle.getOptionButtons().mapIndexed { index, button ->
             button.apply {
                 visibility = View.VISIBLE
                 text = ""
                 icon = getDrawable(R.drawable.ic_palette_black_24dp)
-                setIconTintResource(getTheme(styles[index]).getColorRes(R.attr.colorPrimary))
+                setIconTintResource(getTheme(styles[index])
+                    .getColorRes(androidx.appcompat.R.attr.colorPrimary))
             }
             button.setOnClickListener { viewModel.quickSettings.clickStyle(index) }
         }
         viewModel.quickSettings.styleIndexLiveData.observe(this, Observer { index ->
-            vStyle.getOptionButtons()[index].isChecked = true
+            binding.vStyle.getOptionButtons()[index].isChecked = true
         })
     }
 
@@ -273,7 +277,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
     }.resourceId
 
     private fun bindShowWallpaper() {
-        smShowWallpaper.setOnCheckedChangeListener { _, isChecked ->
+        binding.smShowWallpaper.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 getReadStoragePermission { isAllowed ->
                     viewModel.quickSettings.setShowWallpaper(isAllowed)
@@ -283,7 +287,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
             }
         }
         viewModel.quickSettings.showWallpaperLiveData.observe(this, Observer {
-            smShowWallpaper.isChecked = it
+            binding.smShowWallpaper.isChecked = it
         })
     }
 
@@ -306,7 +310,7 @@ class MainActivity : BaseAppCompatActivity(R.layout.activity_main, canGoBack = f
 
     override fun onCreateOptionsMenu(menu: Menu?) =
         menuInflater.inflate(R.menu.main_menu, menu).let {
-            menu.setVisibleIcons(theme)
+            menu?.setVisibleIcons(this, theme, binding.root)
             true
         }
 
@@ -341,7 +345,11 @@ private class WidgetRecyclerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        WidgetViewHolder(parent.inflate(parent.context, R.layout.view_graph_widget_item))
+        WidgetViewHolder(
+            ViewGraphWidgetItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
 
     override fun getItemCount() = items.size
 
@@ -350,22 +358,24 @@ private class WidgetRecyclerAdapter(
 
 }
 
-private class WidgetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+private class WidgetViewHolder(private val binding: ViewGraphWidgetItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
     fun bind(
         item: MainViewModel.WidgetItem,
         clickListener: (Int) -> Unit,
         longClickListener: (Int) -> Unit
-    ) = with(itemView) {
+    ) = with(binding) {
         val (widgetId, imageData, showWallpaper) = item
+
         ivWidget.setBackgroundColor(
             ivWidget.context.getColor(
                 if (showWallpaper) android.R.color.transparent else R.color.colorGray
             )
         )
         cvWidget.cardElevation =
-            if (showWallpaper) 0f else resources.getDimension(R.dimen.widget_card_margin)
+            if (showWallpaper) 0f else root.resources.getDimension(R.dimen.widget_card_margin)
         ivWidget.setImageBitmap(BitmapFactory.decodeByteArray(imageData, 0, imageData.size))
-        setOnClickListener { clickListener(widgetId) }
-        setOnLongClickListener { longClickListener(widgetId).let { true } }
+        root.setOnClickListener { clickListener(widgetId) }
+        root.setOnLongClickListener { longClickListener(widgetId).let { true } }
     }
 }
