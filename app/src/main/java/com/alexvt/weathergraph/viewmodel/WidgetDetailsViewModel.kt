@@ -95,11 +95,13 @@ class WidgetDetailsViewModel @Inject constructor(
     private val editorUpSubject = BehaviorSubject.create<Boolean>()
 
     // todo move logic to use case
-    fun setLocationSearchText(location: String) =
+    fun setLocationSearchText(location: String) {
+        locationViewModel.setLocationSearchText(location, updateSearchForm = true)
         searchLocationUseCaseFactory.single.getSuggestions(location).takeIf { it.isNotEmpty() }
             ?.first()?.apply {
                 userEditWidgetUseCase.updateWithLocationName(name, id, latitude, longitude)
             }
+    }
 
     val isOnWallpaperLiveData: LiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().also { liveData ->

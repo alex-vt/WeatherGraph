@@ -76,7 +76,7 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
 
     override fun onNewIntent(intent: Intent) = super.onNewIntent(intent).also {
         takeIf { Intent.ACTION_SEARCH == intent.action }
-            ?.intent?.getStringExtra(SearchManager.QUERY)
+            ?.let { intent.getStringExtra(SearchManager.QUERY) }
             ?.let { query -> viewModel.setLocationSearchText(query) }
     }
 

@@ -41,6 +41,7 @@ class WidgetDetailsLocationViewModel @Inject constructor(
     val searchSuggestionsLiveData: LiveData<List<SuggestionItem>> = MutableLiveData()
     val mapMarkersLiveData: LiveData<List<MapMarkerItem>> = MutableLiveData()
     val selectionMapMarkerLiveData: LiveData<MapMarkerItem> = MutableLiveData()
+    val searchFormTextUpdateLiveData: LiveData<Event<String>> = MutableLiveData()
 
     fun loadByWidgetId(widgetId: Int) {
         if (!::userEditWidgetUseCase.isInitialized) {
@@ -132,8 +133,12 @@ class WidgetDetailsLocationViewModel @Inject constructor(
         locationFailedDialogLiveData.postValue(null)
     }
 
-    fun setLocationSearchText(location: String) =
+    fun setLocationSearchText(location: String, updateSearchForm: Boolean = false) {
+        if (updateSearchForm) {
+            searchFormTextUpdateLiveData.setEvent(location)
+        }
         searchLocationUseCaseFactory.single.getSuggestions(location).let { setSuggestions(it) }
+    }
 
     private fun setSuggestions(suggestions: List<OwmLocation>, chooseFirst: Boolean = false) {
         searchSuggestionsLiveData.postValue(suggestions.map {

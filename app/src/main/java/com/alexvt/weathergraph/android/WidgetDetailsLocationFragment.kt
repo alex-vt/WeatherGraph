@@ -25,6 +25,7 @@ import com.alexvt.weathergraph.R
 import com.alexvt.weathergraph.android.util.SearchViewUtil
 import com.alexvt.weathergraph.databinding.FragmentWidgetDetailsLocationBinding
 import com.alexvt.weathergraph.databinding.ViewLocationSuggestionItemBinding
+import com.alexvt.weathergraph.viewmodel.EventObserver
 import com.alexvt.weathergraph.viewmodel.WidgetDetailsLocationViewModel
 import com.google.android.gms.location.LocationRequest
 import com.yayandroid.locationmanager.base.LocationBaseFragment
@@ -226,6 +227,9 @@ class WidgetDetailsLocationFragment : LocationBaseFragment() { // todo use BaseF
 
             override fun onQueryTextChange(newText: String) =
                 viewModel.setLocationSearchText(newText).let { true } // todo search first
+        })
+        viewModel.searchFormTextUpdateLiveData.observe(viewLifecycleOwner, EventObserver { newText ->
+            binding.svLocation.setQuery(newText, false) // visual change only, no need to re-submit
         })
     }
 
