@@ -139,6 +139,14 @@ class WidgetDetailsViewModel @Inject constructor(
     fun expandEditor(expand: Boolean) {
         editorUpSubject.onNext(expand)
         bottomSheetSwipingAllowedLiveData.setValue(userEditWidgetUseCase.existsAsSaved() && !expand)
+        // Fragment viewmodels each has an instance of editor usecase.
+        // Instantiation of new editor after an unsaved edit would reset it (todo save temporarily).
+        // Forcing simultaneous instantiation of editors in viewmodels.
+        widgetLiveData.value?.widgetId?.let {
+            locationViewModel.loadByWidgetId(it)
+            dataViewModel.loadByWidgetId(it)
+            appearanceViewModel.loadByWidgetId(it)
+        }
     }
 
     fun clickSaveButton() =
