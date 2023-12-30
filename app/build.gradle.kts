@@ -6,6 +6,7 @@
 
 import java.util.Properties
 import java.io.FileInputStream
+import java.text.SimpleDateFormat
 
 plugins {
     id("com.android.application")
@@ -27,8 +28,16 @@ android {
         applicationId = "com.alexvt.weathergraph"
         minSdkVersion(28)
         targetSdkVersion(33)
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = (System.currentTimeMillis() / 10_000).toInt() // 10-second timestamp
+        versionName = listOfNotNull( // build time + commit hash if available
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").format(System.currentTimeMillis()),
+            Runtime.getRuntime().exec("git diff-index HEAD")
+                .inputStream.bufferedReader().use { it.readText() }
+                .takeIf { it.isNotBlank() }?.let { "modified" },
+            Runtime.getRuntime().exec("git rev-parse --short HEAD")
+                .inputStream.bufferedReader().use { it.readText() }
+                .takeIf { it.isNotBlank() }?.let { "commit ${it.trim()}" },
+        ).joinToString(separator = " ")
 
         buildConfigField("String", "OWM_API_KEY", apiKeyProperties["OWM_API_KEY"] as String)
         buildConfigField("String", "AQICN_API_KEY", apiKeyProperties["AQICN_API_KEY"] as String)
