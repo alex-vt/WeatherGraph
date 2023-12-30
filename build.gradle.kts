@@ -4,13 +4,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-buildscript {
-}
-
 plugins {
-    id 'com.android.application' version '8.0.1' apply false
-    id 'org.jetbrains.kotlin.android' version '1.8.21' apply false
-    id 'com.mikepenz.aboutlibraries.plugin' version '10.6.3'
+    id("com.android.application") version "8.0.1" apply false
+    id("org.jetbrains.kotlin.android") version "1.8.21" apply false
+    id("com.mikepenz.aboutlibraries.plugin") version "10.6.3"
 }
 
 allprojects {
@@ -21,6 +18,6 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register<Delete>("clean") {
+    delete(rootProject.buildDir)
 }

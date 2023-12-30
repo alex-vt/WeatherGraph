@@ -12,5 +12,5 @@ pluginManagement {
     }
 }
 
-rootProject.name='WeatherGraph'
-include ':app'
+rootProject.name = "WeatherGraph"
+include(":app")
