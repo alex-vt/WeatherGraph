@@ -123,7 +123,7 @@ class WidgetDetailsActivity : BaseAppCompatActivity(R.layout.activity_widget_det
             binding.cvWeatherDetails.visibility = View.VISIBLE
             items.forEachIndexed { index, item ->
                 with(dayTemperatureViews[index]) {
-                    binding.mtvToday.visibility = if (item.isToday) View.VISIBLE else View.GONE
+                    mtvToday.visibility = if (item.isToday) View.VISIBLE else View.GONE
                     mtvDate.text = getString(R.string.week_date, item.weekDayText, item.dateText)
                     sTemperatures.values = listOf(
                         item.minTempNormalized.toFloat(),
