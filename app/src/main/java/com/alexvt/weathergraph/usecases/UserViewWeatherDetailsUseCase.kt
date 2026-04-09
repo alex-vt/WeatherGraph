@@ -99,19 +99,33 @@ class UserViewWeatherDetailsUseCase private constructor(
     private fun TemperatureDataSet.toDailyTemperatures(timezoneShiftMillis: Long) =
         groupBy { (_, timeMillis) ->
             timeMillis.getDayOfMonth(timezoneShiftMillis)
-        }.toList().trimIncompleteLastDay().map { (day, dataSet) ->
-            DailyTemperatureItem(
-                nowTempK = if (day.isToday(timezoneShiftMillis)) {
-                    dataSet.getTemperatures().first()
-                } else {
-                    null
-                },
-                minTempK = dataSet.getTemperatures().min(),
-                maxTempK = dataSet.getTemperatures().max(),
-                timestamp = dataSet.first().let { (_, timestamp) -> timestamp },
-                timezoneShiftMillis = timezoneShiftMillis
-            )
-        }
+        }.toList().trimIncompleteLastDay()
+            .windowed(size = 2, partialWindows = true) { currentAndOptionallyNextDayData ->
+                val (day, dataSet) = currentAndOptionallyNextDayData.first()
+                val followingMidnightTemperatureOrNull =
+                    currentAndOptionallyNextDayData
+                        .takeIf { it.size > 1 }
+                        ?.last()
+                        ?.let { (_, nextDayDataSet) ->
+                            nextDayDataSet
+                        }?.getTemperatures()
+                        ?.first()
+                val dayTemperatures =
+                    followingMidnightTemperatureOrNull
+                        ?.let { dataSet.getTemperatures() + it }
+                        ?: dataSet.getTemperatures()
+                DailyTemperatureItem(
+                    nowTempK = if (day.isToday(timezoneShiftMillis)) {
+                        dayTemperatures.first()
+                    } else {
+                        null
+                    },
+                    minTempK = dayTemperatures.min(),
+                    maxTempK = dayTemperatures.max(),
+                    timestamp = dataSet.first().let { (_, timestamp) -> timestamp },
+                    timezoneShiftMillis = timezoneShiftMillis
+                )
+            }
 
     private fun Double.normalizeIn(min: Double, max: Double) = (this - min) / (max - min)
 
